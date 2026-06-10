@@ -17,13 +17,16 @@ much as the visible result.**
 
 ## Commands
 
+This repo uses **Yarn Berry** (version pinned via `packageManager` in
+package.json, `nodeLinker: node-modules`). Use `yarn`, never `npm`.
+
 ```bash
-npm run dev      # dev server
-npm run build    # production build — must pass before any merge
-npm run lint     # ESLint
-npm run test     # Vitest (watch)
-npm run test:run # Vitest (single pass, used in CI)
-npm run format   # Prettier write
+yarn dev      # dev server
+yarn build    # production build — must pass before any merge
+yarn lint     # ESLint
+yarn test     # Vitest (watch)
+yarn test:run # Vitest (single pass, used in CI)
+yarn format   # Prettier write
 ```
 
 ## Hard rules

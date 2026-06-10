@@ -12,23 +12,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # corepack reads the packageManager field in package.json and
+      # provisions the exact pinned Yarn version.
+      - run: corepack enable
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
+          cache: yarn
 
-      # npm ci installs exactly what package-lock.json specifies —
-      # reproducible builds, unlike npm install.
-      - run: npm ci
+      # --immutable fails if yarn.lock would change — reproducible builds.
+      - run: yarn install --immutable
 
       - name: Lint
-        run: npm run lint
+        run: yarn lint
 
       - name: Check formatting
-        run: npm run format:check
+        run: yarn format:check
 
       - name: Test
-        run: npm run test:run
+        run: yarn test:run
 
       - name: Build
-        run: npm run build
+        run: yarn build

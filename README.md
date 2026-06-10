@@ -7,19 +7,25 @@ Built with [Next.js](https://nextjs.org) (App Router), TypeScript, and Tailwind 
 ## Getting started
 
 ```bash
-npm install
-npm run dev
+corepack enable   # once per machine; provisions the pinned Yarn version
+yarn install
+yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
 
 ## Scripts
 
-| Command         | Description                  |
-| --------------- | ---------------------------- |
-| `npm run dev`   | Start the development server |
-| `npm run build` | Production build             |
-| `npm start`     | Serve the production build   |
+| Command             | Description                  |
+| ------------------- | ---------------------------- |
+| `yarn dev`          | Start the development server |
+| `yarn build`        | Production build             |
+| `yarn start`        | Serve the production build   |
+| `yarn lint`         | ESLint                       |
+| `yarn test`         | Vitest (watch mode)          |
+| `yarn test:run`     | Vitest (single pass, CI)     |
+| `yarn format`       | Prettier write               |
+| `yarn format:check` | Prettier check (CI)          |
 
 ## Project structure
 
