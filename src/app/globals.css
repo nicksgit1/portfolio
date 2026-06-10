@@ -1,1 +1,68 @@
 @import "tailwindcss";
+
+/*
+ * Design tokens.
+ * Raw values live on :root so dark mode can swap them with one media query;
+ * @theme inline maps them to Tailwind utilities (bg-background, text-accent…).
+ * All pairings meet WCAG AA contrast (4.5:1 for text) in both modes.
+ */
+:root {
+  --background: #faf9f7;
+  --surface: #f0eeea;
+  --foreground: #1c1b1a;
+  --muted: #57534e;
+  --accent: #1d4ed8;
+  --border: #d6d3d1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #121110;
+    --surface: #1e1c1a;
+    --foreground: #e7e5e4;
+    --muted: #a8a29e;
+    --accent: #93c5fd;
+    --border: #3f3c39;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-mono:
+    ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Visible focus for keyboard users — a WCAG 2.4.7 requirement.
+   :focus-visible keeps it out of the way for mouse clicks. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Respect users who turn off animation (WCAG 2.3.3 / prefers-reduced-motion). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
