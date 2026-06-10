@@ -7,7 +7,7 @@ export const site = {
   role: "Engineering Leader",
   tagline:
     "Director of Engineering and full-stack developer. I lead teams building civic tech used by every US state — and I still love shipping code end to end.",
-  email: "claude.kqfw6@simplelogin.com",
+  email: "ntsummers1@proton.me",
   github: "https://github.com/ntsummers1",
-  linkedin: "https://www.linkedin.com/in/CHANGE-ME",
+  linkedin: "https://www.linkedin.com/in/nicholas-summers-130aa2411",
 } as const;
