@@ -211,12 +211,12 @@ body {
 }
 
 /*
- * Vaporwave Saturn, seated on the horizon line midway between the two
- * skylines. The disc fades pink to violet with scanline slits cut
- * into its lower half (the classic retrowave sun), a thin tilted
- * cyan ring crosses it, and a soft halo glows behind. Pure CSS; it
- * rides inside .city-scape, so it settles onto the line with the
- * same entrance as the city.
+ * Vaporwave sun, mid-set on the horizon line between the two
+ * skylines. The disc fades gold through pink to violet with scanline
+ * slits cut toward its base (the classic retrowave sun); the gold
+ * echoes the amber window lights in the towers. A soft warm halo
+ * glows behind it. Pure CSS; it rides inside .city-scape, so it
+ * settles onto the line with the same entrance as the city.
  */
 .city-sun {
   position: absolute;
@@ -227,18 +227,18 @@ body {
   /* Submerged: 52% of the disc sits below the horizon line, clipped
      by the scape's overflow — a sun mid-set. */
   transform: translate(-50%, 52%);
-  /* Soft halo behind the visible half of the disc. */
+  /* Soft warm halo behind the visible half of the disc. */
   background: radial-gradient(
     45% 45% at 50% 32%,
-    color-mix(in srgb, var(--glow-pink) 22%, transparent),
+    rgb(255 215 122 / 0.18),
     transparent 75%
   );
 }
 
 /* The disc, with scanline slits widening toward the horizon. The
    gradient mixes toward the background color (opaque, not
-   translucent) so the ring genuinely disappears behind it, and the
-   lowest band runs into the clip so it sits flush on the horizon. */
+   translucent), and the lowest band runs into the clip so it sits
+   flush on the horizon. */
 .city-sun::after {
   content: "";
   position: absolute;
@@ -246,8 +246,9 @@ body {
   border-radius: 50%;
   background: linear-gradient(
     to bottom,
-    color-mix(in srgb, var(--accent) 80%, var(--background)),
-    color-mix(in srgb, var(--glow-pink) 62%, var(--background)) 30%,
+    color-mix(in srgb, #ffd76a 88%, var(--background)),
+    color-mix(in srgb, #ffaf5e 76%, var(--background)) 24%,
+    color-mix(in srgb, var(--glow-pink) 62%, var(--background)) 40%,
     color-mix(in srgb, var(--glow-violet) 58%, var(--background)) 52%
   );
   mask-image: linear-gradient(
@@ -262,22 +263,6 @@ body {
     transparent 44.5% 46.5%,
     black 46.5%
   );
-}
-
-/* The ring — a thin tilted cyan ellipse skimming the horizon. It
-   passes behind the disc (the disc paints over it), so only its tips
-   emerge on either side, reaching toward the skylines. */
-.city-sun::before {
-  content: "";
-  position: absolute;
-  top: 31%;
-  right: -26%;
-  left: -26%;
-  height: 22%;
-  border: 2px solid rgb(110 231 243 / 0.5);
-  border-radius: 50%;
-  transform: rotate(-9deg);
-  box-shadow: 0 0 12px rgb(34 211 238 / 0.25);
 }
 
 .city-far::before,
