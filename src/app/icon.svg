@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Favicon: the site's setting retrowave sun over the horizon line.
+       Hexes mirror the design tokens in globals.css (a standalone SVG
+       favicon can't reach CSS custom properties): background #16122b,
+       glow-gold #ffd76a, glow-amber #ffaf5e, glow-pink #ff2d95. -->
+  <rect width="64" height="64" rx="14" fill="#16122b"/>
+  <defs>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffd76a"/>
+      <stop offset="55%" stop-color="#ffaf5e"/>
+      <stop offset="100%" stop-color="#ff2d95"/>
+    </linearGradient>
+    <mask id="slits">
+      <rect width="64" height="64" fill="white"/>
+      <rect x="8" y="34" width="48" height="2" fill="black"/>
+      <rect x="8" y="39" width="48" height="2.5" fill="black"/>
+      <rect x="8" y="44.5" width="48" height="3" fill="black"/>
+    </mask>
+  </defs>
+  <circle cx="32" cy="30" r="17" fill="url(#sun)" mask="url(#slits)"/>
+  <rect x="6" y="50" width="52" height="2.5" rx="1.25" fill="#ff2d95"/>
+</svg>
