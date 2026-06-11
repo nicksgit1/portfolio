@@ -19,8 +19,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | Command             | Description                  |
 | ------------------- | ---------------------------- |
 | `yarn dev`          | Start the development server |
-| `yarn build`        | Production build             |
-| `yarn start`        | Serve the production build   |
+| `yarn build`        | Static export to `out/`      |
 | `yarn lint`         | ESLint                       |
 | `yarn typecheck`    | TypeScript, no emit          |
 | `yarn test`         | Vitest (watch mode)          |
@@ -33,6 +32,18 @@ Open [http://localhost:3000](http://localhost:3000).
 ```
 src/
   app/        # Next.js App Router pages and layouts
+```
+
+## Deployment
+
+Pushes to `main` deploy automatically to GitHub Pages via
+`.github/workflows/deploy.yml`. The site is a full static export (`output:
+"export"`), built with `NEXT_PUBLIC_BASE_PATH=/portfolio` to match the
+project-site subpath. To preview the production build locally:
+
+```bash
+yarn build
+npx serve out
 ```
 
 ## Git hooks
