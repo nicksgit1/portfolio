@@ -23,6 +23,20 @@ describe("ProjectCard", () => {
     );
   });
 
+  it("titles the card at h3 by default", () => {
+    render(<ProjectCard project={project} />);
+    expect(
+      screen.getByRole("heading", { level: 3, name: "Test Project" }),
+    ).toBeInTheDocument();
+  });
+
+  it("titles the card at the requested heading level", () => {
+    render(<ProjectCard project={project} headingLevel="h2" />);
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Test Project" }),
+    ).toBeInTheDocument();
+  });
+
   it("lists the tech stack accessibly", () => {
     render(<ProjectCard project={project} />);
     const stack = screen.getByRole("list", { name: "Tech stack" });

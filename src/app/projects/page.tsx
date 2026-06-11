@@ -17,7 +17,9 @@ export default function ProjectsPage() {
       </p>
       <div className="mt-8 grid gap-6">
         {projects.map((project) => (
-          <ProjectCard key={project.slug} project={project} />
+          // h2: the cards sit directly under the page h1 here, unlike the
+          // home page where they fall under the "Selected work" h2.
+          <ProjectCard key={project.slug} project={project} headingLevel="h2" />
         ))}
       </div>
     </div>
