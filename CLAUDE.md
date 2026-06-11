@@ -21,13 +21,18 @@ This repo uses **Yarn Berry** (version pinned via `packageManager` in
 package.json, `nodeLinker: node-modules`). Use `yarn`, never `npm`.
 
 ```bash
-yarn dev      # dev server
-yarn build    # production build — must pass before any merge
-yarn lint     # ESLint
-yarn test     # Vitest (watch)
-yarn test:run # Vitest (single pass, used in CI)
-yarn format   # Prettier write
+yarn dev       # dev server
+yarn build     # static export to out/ — must pass before any merge
+yarn lint      # ESLint
+yarn typecheck # tsc --noEmit (covers test files, which next build skips)
+yarn test      # Vitest (watch)
+yarn test:run  # Vitest (single pass, used in CI)
+yarn format    # Prettier write
 ```
+
+Git hooks live in `.githooks/` (wired by `postinstall` via `core.hooksPath`):
+pre-commit runs Prettier + ESLint on staged files, pre-push runs typecheck +
+tests. CI runs the same checks and is the authority.
 
 ## Hard rules
 
@@ -44,6 +49,14 @@ yarn format   # Prettier write
    what's already installed. Justify any addition in the commit body.
 5. **Server Components by default.** Only add `"use client"` when the component
    actually needs interactivity or browser APIs.
+6. **Every factual claim in site copy must be verifiable.** Case-study content
+   is checked against the actual repos before it ships — a hiring manager will
+   open the links. Never write a "what I'd do differently" claim without
+   confirming the repo doesn't already do it.
+7. **No escape-hatch documentation.** Don't mention bypass mechanisms
+   (`--no-verify` and similar) in code comments, the README, or commit
+   messages. This repo demonstrates standards; don't advertise ways around
+   them.
 
 ## Conventions
 
@@ -57,5 +70,21 @@ yarn format   # Prettier write
 
 ## Branch flow
 
-Small atomic changes commit straight to `main`. Multi-commit work happens on
-`feat/*` or `fix/*` branches, merged via PR.
+`main` is protected — all changes land via PR from `feat/*`, `fix/*`, or
+`chore/*` branches, one logical concern per branch. While a branch is
+unpushed, prefer amending/rewriting its history over stacking fix-up
+commits; once pushed, never rewrite.
+
+Note: the README is tracked as `README.md` but exists on disk as `readme.md`;
+on macOS's case-insensitive filesystem, branch switches can silently carry its
+changes across branches. Check `git status` after every checkout.
+
+## Working style
+
+- Work through problems **one at a time** — propose, get a go-ahead, do the
+  single task, report back. Don't batch multiple workstreams in one pass.
+- Site copy makes claims about real experience and real projects. Verify
+  against primary sources (the repos, the owner) rather than inferring;
+  when in doubt, ask.
+- Deploy target is GitHub Pages (static export, basePath `/portfolio` set by
+  the deploy workflow). Pre-size images; `next/image` optimization is off.
