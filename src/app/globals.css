@@ -1,29 +1,33 @@
 @import "tailwindcss";
 
 /*
- * Design tokens.
- * Raw values live on :root so dark mode can swap them with one media query;
- * @theme inline maps them to Tailwind utilities (bg-background, text-accent…).
- * All pairings meet WCAG AA contrast (4.5:1 for text) in both modes.
+ * Design tokens — retrowave palette.
+ * The site is intentionally dark-only: the aesthetic depends on neon
+ * accents over a deep indigo night sky, which has no faithful light
+ * equivalent. Raw values live on :root; @theme inline maps them to
+ * Tailwind utilities (bg-background, text-accent…).
+ *
+ * Contrast (WCAG AA, 4.5:1 minimum for text, checked against #16122b):
+ *   foreground #f4f1ff  ~16.3:1
+ *   muted      #b8aedd  ~ 8.8:1
+ *   accent     #ff7eb6  ~ 7.7:1   (hot pink — primary interactive)
+ *   accent-2   #6ee7f3  ~12.5:1   (neon cyan — secondary interactive)
  */
 :root {
-  --background: #faf9f7;
-  --surface: #f0eeea;
-  --foreground: #1c1b1a;
-  --muted: #57534e;
-  --accent: #1d4ed8;
-  --border: #d6d3d1;
-}
+  color-scheme: dark;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #121110;
-    --surface: #1e1c1a;
-    --foreground: #e7e5e4;
-    --muted: #a8a29e;
-    --accent: #93c5fd;
-    --border: #3f3c39;
-  }
+  --background: #16122b;
+  --surface: #1f1940;
+  --foreground: #f4f1ff;
+  --muted: #b8aedd;
+  --accent: #ff7eb6;
+  --accent-2: #6ee7f3;
+  --border: #3b3263;
+
+  /* Saturated variants for glows/gradients only — never body text. */
+  --glow-pink: #ff2d95;
+  --glow-cyan: #22d3ee;
+  --glow-violet: #7c3aed;
 }
 
 @theme inline {
@@ -32,13 +36,19 @@
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
   --color-border: var(--border);
+  --color-glow-pink: var(--glow-pink);
+  --color-glow-cyan: var(--glow-cyan);
+  --color-glow-violet: var(--glow-violet);
 
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
   --font-mono:
     ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  /* Populated by next/font in layout.tsx; falls back to sans. */
+  --font-display: var(--font-orbitron, var(--font-sans));
 }
 
 body {
@@ -50,7 +60,7 @@ body {
 /* Visible focus for keyboard users — a WCAG 2.4.7 requirement.
    :focus-visible keeps it out of the way for mouse clicks. */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-2);
   outline-offset: 2px;
   border-radius: 2px;
 }
