@@ -1,8 +1,18 @@
 import type { Metadata } from "next";
+import { Orbitron } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { site } from "@/content/site";
 import "./globals.css";
+
+/* Display font for headings only; body text stays on the system stack
+   for readability. Self-hosted by next/font at build time — no runtime
+   request to Google. Exposed as a CSS variable consumed in globals.css. */
+const orbitron = Orbitron({
+  subsets: ["latin"],
+  variable: "--font-orbitron",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -18,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={orbitron.variable}>
       <body className="flex min-h-dvh flex-col antialiased">
         {/* Skip link: first focusable element on the page, lets keyboard
             users bypass the nav (WCAG 2.4.1). Visually hidden until focused. */}

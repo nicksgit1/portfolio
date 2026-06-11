@@ -39,14 +39,14 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <article>
-      <h1 className="text-3xl font-bold tracking-tight">{project.title}</h1>
+      <h1 className="font-display text-3xl font-bold">{project.title}</h1>
       <p className="mt-4 max-w-prose text-lg text-muted">{project.summary}</p>
 
       <ul aria-label="Tech stack" className="mt-6 flex flex-wrap gap-2">
         {project.stack.map((tech) => (
           <li
             key={tech}
-            className="rounded-full border border-border px-3 py-0.5 text-xs text-muted"
+            className="rounded-full border border-border bg-glow-violet/10 px-3 py-0.5 text-xs text-muted"
           >
             {tech}
           </li>
@@ -56,7 +56,7 @@ export default async function ProjectPage({ params }: Props) {
       {visibleLinks.length > 0 && (
         <p className="mt-4 flex flex-wrap gap-6">
           {visibleLinks.map(([label, href]) => (
-            <a key={label} href={href} className="text-accent hover:underline">
+            <a key={label} href={href} className="neon-link">
               {label}
             </a>
           ))}
@@ -68,7 +68,7 @@ export default async function ProjectPage({ params }: Props) {
           <section key={heading} aria-labelledby={`${heading.toLowerCase()}-h`}>
             <h2
               id={`${heading.toLowerCase()}-h`}
-              className="text-xl font-semibold"
+              className="font-display text-xl font-semibold"
             >
               {heading}
             </h2>

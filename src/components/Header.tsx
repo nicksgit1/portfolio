@@ -16,7 +16,10 @@ export function Header() {
   return (
     <header className="border-b border-border">
       <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-        <Link href="/" className="font-semibold tracking-tight">
+        <Link
+          href="/"
+          className="font-display text-sm font-bold tracking-widest uppercase transition-colors hover:text-accent-2"
+        >
           {site.name}
         </Link>
         <nav aria-label="Main">
@@ -30,9 +33,12 @@ export function Header() {
                     href={href}
                     aria-current={isCurrent ? "page" : undefined}
                     className={
+                      // Current page: glowing cyan underline. Cyan is the
+                      // site-wide "hot" color (hover/focus/current); pink
+                      // marks at-rest links in content.
                       isCurrent
-                        ? "font-medium text-foreground underline underline-offset-8"
-                        : "text-muted hover:text-foreground"
+                        ? "relative font-medium text-foreground after:absolute after:inset-x-0 after:-bottom-1.5 after:h-0.5 after:rounded-full after:bg-accent-2 after:shadow-[0_0_8px_var(--glow-cyan)]"
+                        : "text-muted transition-colors hover:text-accent-2"
                     }
                   >
                     {label}

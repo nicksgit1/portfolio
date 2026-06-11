@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function ProjectsPage() {
   return (
     <div>
-      <h1 className="text-3xl font-bold tracking-tight">Projects</h1>
+      <h1 className="font-display text-3xl font-bold">Projects</h1>
       <p className="mt-4 max-w-prose text-muted">
         Each project is written up as a short case study: the problem, the
         approach, and what came of it.
