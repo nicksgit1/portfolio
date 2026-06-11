@@ -151,12 +151,15 @@ body {
 }
 
 /*
- * City skyline silhouettes. Two mirrored clip-path skylines pinned to
- * the bottom corners of the viewport, in a violet just above the
- * background color — present at a glance, invisible when reading.
- * Tallest towers hug the screen edge and step down toward the content
- * column. Fixed and decorative like the rest of the scene; the element
- * is hidden below the xl breakpoint in markup so it never crowds text.
+ * City skyline silhouettes. Two depth layers per bottom corner of the
+ * viewport, mirrored left/right via clip-path skylines — present at a
+ * glance, invisible when reading. The far layer is wider, taller, and
+ * closer to the sky color (atmospheric perspective); the near layer
+ * hugs the screen edge in a deeper violet and carries faint lit-window
+ * strips in the palette colors, echoing the reference site's side
+ * buildings. Visible at every viewport size: on phones the clamp()
+ * shrinks the footprint and the art stays dim enough to read over.
+ * Fixed and decorative like the rest of the scene.
  */
 .city-scape {
   position: fixed;
@@ -165,14 +168,38 @@ body {
   pointer-events: none;
 }
 
-.city-scape::before,
-.city-scape::after {
+.city-far,
+.city-near {
+  position: absolute;
+  inset: 0;
+}
+
+.city-far::before,
+.city-far::after,
+.city-near::before,
+.city-near::after {
   content: "";
   position: absolute;
-  bottom: 0;
-  width: clamp(150px, 16vw, 270px);
-  height: 220px;
-  background: color-mix(in srgb, var(--glow-violet) 16%, var(--background));
+  /* Extends below the viewport so parallax drift never reveals a gap. */
+  bottom: -3rem;
+}
+
+.city-far::before,
+.city-near::before {
+  left: 0;
+}
+
+.city-far::after,
+.city-near::after {
+  right: 0;
+  transform: scaleX(-1);
+}
+
+.city-far::before,
+.city-far::after {
+  width: clamp(130px, 20vw, 400px);
+  height: calc(clamp(170px, 30vh, 280px) + 3rem);
+  background: color-mix(in srgb, var(--glow-violet) 12%, var(--background));
   clip-path: polygon(
     0% 14%,
     6% 14%,
@@ -209,13 +236,87 @@ body {
   );
 }
 
-.city-scape::before {
-  left: 0;
+.city-near::before,
+.city-near::after {
+  width: clamp(90px, 13vw, 260px);
+  height: calc(clamp(150px, 26vh, 230px) + 3rem);
+  /* Base silhouette + lit-window strips: narrow columns of repeating
+     window rows, bottom-anchored inside specific towers. */
+  background-color: color-mix(
+    in srgb,
+    var(--glow-violet) 22%,
+    var(--background)
+  );
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      rgb(110 231 243 / 0.32) 0 2px,
+      transparent 2px 9px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgb(255 211 145 / 0.3) 0 2px,
+      transparent 2px 11px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgb(255 126 182 / 0.28) 0 2px,
+      transparent 2px 8px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgb(110 231 243 / 0.22) 0 2px,
+      transparent 2px 10px
+    );
+  background-repeat: no-repeat;
+  background-size:
+    3.5% 52%,
+    3.5% 40%,
+    3.5% 34%,
+    3.5% 24%;
+  background-position:
+    9% 100%,
+    33% 100%,
+    62% 100%,
+    87% 100%;
+  clip-path: polygon(
+    0% 12%,
+    4% 12%,
+    4% 2%,
+    6% 2%,
+    6% 12%,
+    16% 12%,
+    16% 26%,
+    28% 26%,
+    28% 18%,
+    29.5% 18%,
+    29.5% 8%,
+    30.5% 8%,
+    30.5% 18%,
+    40% 18%,
+    40% 46%,
+    56% 46%,
+    56% 34%,
+    68% 34%,
+    68% 60%,
+    82% 60%,
+    82% 50%,
+    94% 50%,
+    94% 72%,
+    100% 72%,
+    100% 100%,
+    0% 100%
+  );
 }
 
-.city-scape::after {
-  right: 0;
-  transform: scaleX(-1);
+/* On narrow screens the footer text overlaps the skyline corners, so
+   the lit windows are dropped there (a 2px window dash behind 14px
+   copy fails local contrast); the plain silhouettes stay. */
+@media (max-width: 48rem) {
+  .city-near::before,
+  .city-near::after {
+    background-image: none;
+  }
 }
 
 /* Faint halftone line screen, visible only around the bloom regions. */
