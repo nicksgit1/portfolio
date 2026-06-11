@@ -4,6 +4,9 @@
  *
  *   - `/route/` serves `out/route/index.html` (trailingSlash export)
  *   - unknown paths serve `out/404.html` with a 404 status
+ *   - with BASE_PATH set (e.g. /portfolio), the site is served from that
+ *     subpath — mirroring a Pages *project* site — and anything outside
+ *     it 404s
  *
  * Used by Playwright's webServer (see playwright.config.ts) so e2e tests
  * run against the same artifact that deploys — not the dev server.
@@ -15,6 +18,8 @@ import path from "node:path";
 
 const ROOT = path.resolve(import.meta.dirname, "..", "out");
 const PORT = Number(process.env.PORT ?? 4173);
+// Must match the NEXT_PUBLIC_BASE_PATH the site was built with.
+const BASE_PATH = process.env.BASE_PATH ?? "";
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -31,9 +36,18 @@ const MIME = {
   ".woff2": "font/woff2",
 };
 
-/** Map a URL pathname to a file inside `out/`, or null if it escapes ROOT. */
+/** Map a URL pathname to a file inside `out/`, or null if it escapes ROOT
+    or falls outside the configured base path. */
 function resolvePath(pathname) {
-  const decoded = decodeURIComponent(pathname);
+  let decoded = decodeURIComponent(pathname);
+  if (BASE_PATH) {
+    // Pages redirects the bare subpath to its trailing-slash form;
+    // serving the index directly is equivalent for tests.
+    if (decoded === BASE_PATH) decoded = "/";
+    else if (decoded.startsWith(`${BASE_PATH}/`))
+      decoded = decoded.slice(BASE_PATH.length);
+    else return null;
+  }
   const withIndex = decoded.endsWith("/") ? `${decoded}index.html` : decoded;
   const resolved = path.resolve(ROOT, `.${path.posix.normalize(withIndex)}`);
   return resolved.startsWith(ROOT) ? resolved : null;
@@ -64,5 +78,5 @@ const server = createServer(async (req, res) => {
 });
 
 server.listen(PORT, "127.0.0.1", () => {
-  console.log(`Serving ${ROOT} at http://127.0.0.1:${PORT}`);
+  console.log(`Serving ${ROOT} at http://127.0.0.1:${PORT}${BASE_PATH}/`);
 });
