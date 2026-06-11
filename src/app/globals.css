@@ -412,6 +412,48 @@ body {
   box-shadow: 0 0 16px 2px color-mix(in srgb, var(--glow-pink) 60%, transparent);
 }
 
+/*
+ * Scroll-driven parallax. Each background layer drifts upward a few
+ * rem over the full page scroll, at a rate matching its depth: stars
+ * barely move, blooms drift gently, the far skyline a little more,
+ * the near skyline most. Pure CSS (animation-timeline: scroll()) — a
+ * progressive enhancement; browsers without support simply keep the
+ * static scene. Explicitly disabled under prefers-reduced-motion.
+ */
+@supports (animation-timeline: scroll()) {
+  .mystic-bg,
+  .mystic-bg::before,
+  .city-far,
+  .city-near {
+    animation: parallax-drift linear both;
+    animation-timeline: scroll();
+  }
+
+  .mystic-bg {
+    --drift: -1.25rem;
+  }
+
+  /* Stars ride inside the bloom layer; a small counter-drift makes
+     their net movement about half the blooms' (they are farther). */
+  .mystic-bg::before {
+    --drift: 0.6rem;
+  }
+
+  .city-far {
+    --drift: -2rem;
+  }
+
+  .city-near {
+    --drift: -3rem;
+  }
+}
+
+@keyframes parallax-drift {
+  to {
+    transform: translateY(var(--drift, 0));
+  }
+}
+
 /* Visible focus for keyboard users — a WCAG 2.4.7 requirement.
    :focus-visible keeps it out of the way for mouse clicks. */
 :focus-visible {
@@ -429,5 +471,14 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Scroll-driven animations ignore duration, so the parallax drift
+     must be switched off explicitly. */
+  .mystic-bg,
+  .mystic-bg::before,
+  .city-far,
+  .city-near {
+    animation: none !important;
   }
 }
