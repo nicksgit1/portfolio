@@ -57,6 +57,67 @@ body {
   font-family: var(--font-sans);
 }
 
+/*
+ * Retrowave grid horizon (Footer). Purely decorative — the element is
+ * aria-hidden and pointer-events-none, stretched behind the footer
+ * content. A perspective-transformed plane of violet gridlines recedes
+ * toward a glowing pink horizon that doubles as the footer's top
+ * border. The mask keeps lines faint where text sits (contrast stays
+ * effectively that of the solid background) and brightens them below.
+ * Static by design: no animation, no WCAG 2.2.2 moving-content issue.
+ */
+.synth-grid {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.synth-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0 -25%;
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--glow-violet) 60%, transparent) 2px,
+      transparent 2px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--glow-violet) 60%, transparent) 2px,
+      transparent 2px
+    );
+  background-size: 44px 44px;
+  transform: perspective(220px) rotateX(58deg);
+  transform-origin: top center;
+  /* Faint under the text near the horizon, full strength below it. */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 3%,
+    rgb(0 0 0 / 0.16) 35%,
+    rgb(0 0 0 / 0.55) 62%,
+    black 88%
+  );
+}
+
+.synth-grid::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--glow-pink) 30%,
+    var(--glow-pink) 70%,
+    transparent
+  );
+  box-shadow: 0 0 16px 2px color-mix(in srgb, var(--glow-pink) 60%, transparent);
+}
+
 /* Visible focus for keyboard users — a WCAG 2.4.7 requirement.
    :focus-visible keeps it out of the way for mouse clicks. */
 :focus-visible {
