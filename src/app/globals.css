@@ -91,6 +91,65 @@ body {
     );
 }
 
+/*
+ * Star field. Three tiled layers of tiny radial-gradient points at
+ * mismatched tile sizes, so the repetition never reads as a grid.
+ * Brightness stays low (faint, decorative); static — no twinkle
+ * animation, in keeping with the no-moving-content rule.
+ */
+.mystic-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    /* small faint stars */
+    radial-gradient(
+      circle at 25px 45px,
+      rgb(244 241 255 / 0.5) 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 180px 130px,
+      rgb(244 241 255 / 0.4) 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 90px 220px,
+      rgb(244 241 255 / 0.45) 1px,
+      transparent 1.5px
+    ),
+    /* medium stars */
+    radial-gradient(
+        circle at 310px 80px,
+        rgb(244 241 255 / 0.55) 1.3px,
+        transparent 2px
+      ),
+    radial-gradient(
+      circle at 120px 340px,
+      rgb(196 228 255 / 0.5) 1.3px,
+      transparent 2px
+    ),
+    /* sparse brighter stars, one warm pink and one cool cyan */
+    radial-gradient(
+        circle at 420px 160px,
+        rgb(255 190 222 / 0.7) 1.6px,
+        transparent 2.6px
+      ),
+    radial-gradient(
+      circle at 150px 480px,
+      rgb(178 240 250 / 0.65) 1.6px,
+      transparent 2.6px
+    );
+  background-size:
+    260px 290px,
+    340px 310px,
+    300px 370px,
+    460px 420px,
+    430px 510px,
+    720px 640px,
+    810px 730px;
+}
+
 /* Faint halftone line screen, visible only around the bloom regions. */
 .mystic-bg::after {
   content: "";
