@@ -30,14 +30,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={orbitron.variable}>
       <body className="flex min-h-dvh flex-col antialiased">
-        {/* Site-wide decorative background: mystic-blur color blooms and
-            a two-layer city skyline. Fixed behind all content, hidden
-            from assistive tech. */}
+        {/* Site-wide decorative background: mystic-blur color blooms,
+            star field, and scanlines. Fixed behind all content, hidden
+            from assistive tech. (The city skyline lives in the Footer,
+            seated on its horizon line.) */}
         <div aria-hidden="true" className="mystic-bg" />
-        <div aria-hidden="true" className="city-scape">
-          <div className="city-far" />
-          <div className="city-near" />
-        </div>
         {/* Skip link: first focusable element on the page, lets keyboard
             users bypass the nav (WCAG 2.4.1). Visually hidden until focused. */}
         <a

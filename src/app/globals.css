@@ -159,12 +159,20 @@ body {
  * strips in the palette colors, echoing the reference site's side
  * buildings. Visible at every viewport size: on phones the clamp()
  * shrinks the footprint and the art stays dim enough to read over.
- * Fixed and decorative like the rest of the scene.
+ *
+ * The scape is anchored to the footer (bottom: 100% of it), so the
+ * buildings sit exactly on the footer's glowing horizon line and
+ * scroll with the page — grounding the scene while the sky behind
+ * keeps its parallax drift. z-index -1 places it behind page content
+ * but above the fixed sky layer (later in tree order).
  */
 .city-scape {
-  position: fixed;
-  inset: 0;
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
   z-index: -1;
+  height: clamp(170px, 30vh, 280px);
   pointer-events: none;
 }
 
@@ -180,8 +188,7 @@ body {
 .city-near::after {
   content: "";
   position: absolute;
-  /* Extends below the viewport so parallax drift never reveals a gap. */
-  bottom: -3rem;
+  bottom: 0;
 }
 
 .city-far::before,
@@ -198,7 +205,7 @@ body {
 .city-far::before,
 .city-far::after {
   width: clamp(130px, 20vw, 400px);
-  height: calc(clamp(170px, 30vh, 280px) + 3rem);
+  height: clamp(170px, 30vh, 280px);
   background: color-mix(in srgb, var(--glow-violet) 12%, var(--background));
   clip-path: polygon(
     0% 14%,
@@ -239,7 +246,7 @@ body {
 .city-near::before,
 .city-near::after {
   width: clamp(90px, 13vw, 260px);
-  height: calc(clamp(150px, 26vh, 230px) + 3rem);
+  height: clamp(150px, 26vh, 230px);
   /* Base silhouette + lit-window strips: narrow columns of repeating
      window rows, bottom-anchored inside specific towers. */
   background-color: color-mix(
@@ -413,18 +420,17 @@ body {
 }
 
 /*
- * Scroll-driven parallax. Each background layer drifts upward a few
- * rem over the full page scroll, at a rate matching its depth: stars
- * barely move, blooms drift gently, the far skyline a little more,
- * the near skyline most. Pure CSS (animation-timeline: scroll()) — a
- * progressive enhancement; browsers without support simply keep the
- * static scene. Explicitly disabled under prefers-reduced-motion.
+ * Scroll-driven parallax — sky only. The blooms and stars drift a
+ * little over the full page scroll while the city (anchored to the
+ * footer) scrolls with the content, so the skyline stays seated on
+ * the footer's horizon line and the sky slides slowly behind it.
+ * Pure CSS (animation-timeline: scroll()) — a progressive
+ * enhancement; browsers without support simply keep the static
+ * scene. Explicitly disabled under prefers-reduced-motion.
  */
 @supports (animation-timeline: scroll()) {
   .mystic-bg,
-  .mystic-bg::before,
-  .city-far,
-  .city-near {
+  .mystic-bg::before {
     animation: parallax-drift linear both;
     animation-timeline: scroll();
   }
@@ -437,14 +443,6 @@ body {
      their net movement about half the blooms' (they are farther). */
   .mystic-bg::before {
     --drift: 0.6rem;
-  }
-
-  .city-far {
-    --drift: -2rem;
-  }
-
-  .city-near {
-    --drift: -3rem;
   }
 }
 
@@ -476,9 +474,7 @@ body {
   /* Scroll-driven animations ignore duration, so the parallax drift
      must be switched off explicitly. */
   .mystic-bg,
-  .mystic-bg::before,
-  .city-far,
-  .city-near {
+  .mystic-bg::before {
     animation: none !important;
   }
 }
