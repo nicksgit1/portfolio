@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { StackList } from "@/components/StackList";
 import type { Project } from "@/content/projects";
 
 export function ProjectCard({ project }: { project: Project }) {
@@ -19,16 +20,7 @@ export function ProjectCard({ project }: { project: Project }) {
         </Link>
       </h3>
       <p className="mt-2 text-muted">{project.summary}</p>
-      <ul aria-label="Tech stack" className="mt-4 flex flex-wrap gap-2">
-        {project.stack.map((tech) => (
-          <li
-            key={tech}
-            className="rounded-full border border-border bg-glow-violet/10 px-3 py-0.5 text-xs text-muted"
-          >
-            {tech}
-          </li>
-        ))}
-      </ul>
+      <StackList stack={project.stack} className="mt-4" />
     </article>
   );
 }
