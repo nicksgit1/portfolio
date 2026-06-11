@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { BASE } from "./base-path";
 
 /**
  * GitHub Pages serves `404.html` (exported from src/app/not-found.tsx) for
@@ -8,7 +9,7 @@ import { test, expect } from "@playwright/test";
 test("unknown routes serve the 404 page with a 404 status", async ({
   page,
 }) => {
-  const response = await page.goto("/this-page-does-not-exist/");
+  const response = await page.goto(`${BASE}/this-page-does-not-exist/`);
 
   expect(response?.status()).toBe(404);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
@@ -17,7 +18,7 @@ test("unknown routes serve the 404 page with a 404 status", async ({
 });
 
 test("404 page links back to home", async ({ page }) => {
-  await page.goto("/this-page-does-not-exist/");
+  await page.goto(`${BASE}/this-page-does-not-exist/`);
   await page.getByRole("link", { name: "Back to home" }).click();
   await expect(page).toHaveURL(/\/$/);
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
