@@ -28,6 +28,11 @@
   --glow-pink: #ff2d95;
   --glow-cyan: #22d3ee;
   --glow-violet: #7c3aed;
+
+  /* Warm pair for the setting sun and the towers' lit windows — the
+     sun's crown and the window lights share --glow-gold by design. */
+  --glow-gold: #ffd76a;
+  --glow-amber: #ffaf5e;
 }
 
 @theme inline {
@@ -41,6 +46,8 @@
   --color-glow-pink: var(--glow-pink);
   --color-glow-cyan: var(--glow-cyan);
   --color-glow-violet: var(--glow-violet);
+  --color-glow-gold: var(--glow-gold);
+  --color-glow-amber: var(--glow-amber);
 
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
@@ -105,23 +112,24 @@ body {
     /* small faint stars */
     radial-gradient(
       circle at 25px 45px,
-      rgb(244 241 255 / 0.5) 1px,
+      color-mix(in srgb, var(--foreground) 50%, transparent) 1px,
       transparent 1.5px
     ),
     radial-gradient(
       circle at 180px 130px,
-      rgb(244 241 255 / 0.4) 1px,
+      color-mix(in srgb, var(--foreground) 40%, transparent) 1px,
       transparent 1.5px
     ),
     radial-gradient(
       circle at 90px 220px,
-      rgb(244 241 255 / 0.45) 1px,
+      color-mix(in srgb, var(--foreground) 45%, transparent) 1px,
       transparent 1.5px
     ),
-    /* medium stars */
+    /* medium stars (the off-palette tints below are deliberate
+       one-off star colors, not palette drift) */
     radial-gradient(
         circle at 310px 80px,
-        rgb(244 241 255 / 0.55) 1.3px,
+        color-mix(in srgb, var(--foreground) 55%, transparent) 1.3px,
         transparent 2px
       ),
     radial-gradient(
@@ -167,13 +175,23 @@ body {
  * but above the fixed sky layer (later in tree order).
  */
 .city-scape {
+  /* The scene's shared sizing contract. The scape must be at least as
+     tall as the far towers (and the visible sun), and the sun's
+     horizon clipping depends on these agreeing — defined once here,
+     inherited by the layers below. */
+  --city-far-w: clamp(170px, 25vw, 460px);
+  --city-far-h: clamp(240px, 44vh, 440px);
+  --city-near-w: clamp(120px, 17vw, 330px);
+  --city-near-h: clamp(200px, 38vh, 370px);
+  --sun-diameter: clamp(240px, 46vw, 820px);
+
   position: absolute;
   right: 0;
   bottom: 100%;
   left: 0;
   z-index: -1;
-  /* Tall enough for the setting sun at any viewport width. */
-  height: max(clamp(240px, 44vh, 440px), 30vw);
+  /* Tall enough for the towers and the setting sun at any width. */
+  height: max(var(--city-far-h), 30vw);
   /* Clips the sun's submerged half at the horizon line. */
   overflow: hidden;
   pointer-events: none;
@@ -222,7 +240,7 @@ body {
   position: absolute;
   bottom: 0;
   left: 50%;
-  width: clamp(240px, 46vw, 820px);
+  width: var(--sun-diameter);
   aspect-ratio: 1;
   /* Submerged: 52% of the disc sits below the horizon line, clipped
      by the scape's overflow — a sun mid-set. */
@@ -230,7 +248,7 @@ body {
   /* Soft warm halo behind the visible half of the disc. */
   background: radial-gradient(
     45% 45% at 50% 32%,
-    rgb(255 215 122 / 0.18),
+    color-mix(in srgb, var(--glow-gold) 18%, transparent),
     transparent 75%
   );
 }
@@ -246,8 +264,8 @@ body {
   border-radius: 50%;
   background: linear-gradient(
     to bottom,
-    color-mix(in srgb, #ffd76a 88%, var(--background)),
-    color-mix(in srgb, #ffaf5e 76%, var(--background)) 24%,
+    color-mix(in srgb, var(--glow-gold) 88%, var(--background)),
+    color-mix(in srgb, var(--glow-amber) 76%, var(--background)) 24%,
     color-mix(in srgb, var(--glow-pink) 62%, var(--background)) 40%,
     color-mix(in srgb, var(--glow-violet) 58%, var(--background)) 52%
   );
@@ -267,8 +285,8 @@ body {
 
 .city-far::before,
 .city-far::after {
-  width: clamp(170px, 25vw, 460px);
-  height: clamp(240px, 44vh, 440px);
+  width: var(--city-far-w);
+  height: var(--city-far-h);
   background: color-mix(in srgb, var(--glow-violet) 12%, var(--background));
   clip-path: polygon(
     0% 14%,
@@ -308,8 +326,8 @@ body {
 
 .city-near::before,
 .city-near::after {
-  width: clamp(120px, 17vw, 330px);
-  height: clamp(200px, 38vh, 370px);
+  width: var(--city-near-w);
+  height: var(--city-near-h);
   background-color: color-mix(
     in srgb,
     var(--glow-violet) 22%,
@@ -327,41 +345,48 @@ body {
  */
 .city-near::before {
   background-image:
-    radial-gradient(circle, rgb(255 45 149 / 0.85) 40%, transparent 70%),
-    linear-gradient(rgb(110 231 243 / 0.5), rgb(110 231 243 / 0.5)),
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--glow-pink) 85%, transparent) 40%,
+      transparent 70%
+    ),
+    linear-gradient(
+      color-mix(in srgb, var(--accent-2) 50%, transparent),
+      color-mix(in srgb, var(--accent-2) 50%, transparent)
+    ),
     repeating-linear-gradient(
       to bottom,
-      rgb(110 231 243 / 0.32) 0 2px,
+      color-mix(in srgb, var(--accent-2) 32%, transparent) 0 2px,
       transparent 2px 9px
     ),
     repeating-linear-gradient(
       to bottom,
-      rgb(255 211 145 / 0.3) 0 2px,
+      color-mix(in srgb, var(--glow-gold) 30%, transparent) 0 2px,
       transparent 2px 11px
     ),
     repeating-linear-gradient(
       to bottom,
-      rgb(255 126 182 / 0.28) 0 2px,
+      color-mix(in srgb, var(--accent) 28%, transparent) 0 2px,
       transparent 2px 8px
     ),
     repeating-linear-gradient(
       to bottom,
-      rgb(110 231 243 / 0.2) 0 2px,
+      color-mix(in srgb, var(--accent-2) 20%, transparent) 0 2px,
       transparent 2px 10px
     ),
     repeating-linear-gradient(
       to bottom,
-      rgb(255 211 145 / 0.26) 0 2px,
+      color-mix(in srgb, var(--glow-gold) 26%, transparent) 0 2px,
       transparent 2px 12px
     ),
     repeating-linear-gradient(
       to bottom,
-      rgb(255 126 182 / 0.2) 0 2px,
+      color-mix(in srgb, var(--accent) 20%, transparent) 0 2px,
       transparent 2px 9px
     ),
     repeating-linear-gradient(
       to bottom,
-      rgb(110 231 243 / 0.28) 0 2px,
+      color-mix(in srgb, var(--accent-2) 28%, transparent) 0 2px,
       transparent 2px 10px
     );
   background-size:
@@ -426,37 +451,47 @@ body {
  */
 .city-near::after {
   background-image:
-    radial-gradient(circle, rgb(255 45 149 / 0.85) 40%, transparent 70%),
-    linear-gradient(rgb(255 211 145 / 0.4), rgb(255 211 145 / 0.4)),
-    linear-gradient(rgb(255 126 182 / 0.45), rgb(255 126 182 / 0.45)),
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--glow-pink) 85%, transparent) 40%,
+      transparent 70%
+    ),
+    linear-gradient(
+      color-mix(in srgb, var(--glow-gold) 40%, transparent),
+      color-mix(in srgb, var(--glow-gold) 40%, transparent)
+    ),
+    linear-gradient(
+      color-mix(in srgb, var(--accent) 45%, transparent),
+      color-mix(in srgb, var(--accent) 45%, transparent)
+    ),
     repeating-linear-gradient(
       to bottom,
-      rgb(255 211 145 / 0.26) 0 2px,
+      color-mix(in srgb, var(--glow-gold) 26%, transparent) 0 2px,
       transparent 2px 10px
     ),
     repeating-linear-gradient(
       to bottom,
-      rgb(110 231 243 / 0.3) 0 2px,
+      color-mix(in srgb, var(--accent-2) 30%, transparent) 0 2px,
       transparent 2px 9px
     ),
     repeating-linear-gradient(
       to bottom,
-      rgb(110 231 243 / 0.2) 0 2px,
+      color-mix(in srgb, var(--accent-2) 20%, transparent) 0 2px,
       transparent 2px 11px
     ),
     repeating-linear-gradient(
       to bottom,
-      rgb(255 126 182 / 0.28) 0 2px,
+      color-mix(in srgb, var(--accent) 28%, transparent) 0 2px,
       transparent 2px 8px
     ),
     repeating-linear-gradient(
       to bottom,
-      rgb(255 211 145 / 0.28) 0 2px,
+      color-mix(in srgb, var(--glow-gold) 28%, transparent) 0 2px,
       transparent 2px 12px
     ),
     repeating-linear-gradient(
       to bottom,
-      rgb(110 231 243 / 0.3) 0 2px,
+      color-mix(in srgb, var(--accent-2) 30%, transparent) 0 2px,
       transparent 2px 10px
     );
   background-size:
