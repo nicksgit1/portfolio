@@ -27,12 +27,15 @@ yarn lint      # ESLint
 yarn typecheck # tsc --noEmit (covers test files, which next build skips)
 yarn test      # Vitest (watch)
 yarn test:run  # Vitest (single pass, used in CI)
+yarn e2e       # Playwright against the static export (build + test)
 yarn format    # Prettier write
 ```
 
 Git hooks live in `.githooks/` (wired by `postinstall` via `core.hooksPath`):
 pre-commit runs Prettier + ESLint on staged files, pre-push runs typecheck +
-tests. CI runs the same checks and is the authority.
+tests. CI runs the same checks and is the authority. E2e tests (Playwright)
+run only in CI on pull requests — they gate merges but stay out of the
+hook loop to keep commits and pushes fast.
 
 ## Hard rules
 

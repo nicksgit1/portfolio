@@ -39,3 +39,36 @@ jobs:
 
       - name: Build
         run: yarn build
+
+  # E2e tests run against the built static export in a real browser.
+  # PR-only by design: they gate merges, and main re-running them on the
+  # identical merged commit would add minutes without adding signal.
+  e2e:
+    name: End-to-end tests
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: corepack enable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - run: yarn install --immutable
+
+      - name: Install Playwright browsers
+        run: yarn playwright install --with-deps chromium
+
+      - name: Build and run e2e tests
+        run: yarn e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
