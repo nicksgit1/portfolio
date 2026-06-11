@@ -15,11 +15,27 @@ const orbitron = Orbitron({
 });
 
 export const metadata: Metadata = {
+  // Absolute-URL base for social-preview tags; per-page paths resolve
+  // against it. The basePath is part of the canonical URL on Pages.
+  metadataBase: new URL(site.url),
   title: {
     default: `${site.name} — ${site.role}`,
     template: `%s — ${site.name}`,
   },
   description: site.tagline,
+  openGraph: {
+    title: `${site.name} — ${site.role}`,
+    description: site.tagline,
+    url: "./",
+    siteName: site.name,
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary",
+    title: `${site.name} — ${site.role}`,
+    description: site.tagline,
+  },
 };
 
 export default function RootLayout({
