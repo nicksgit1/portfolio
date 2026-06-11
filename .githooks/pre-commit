@@ -1,0 +1,25 @@
+#!/bin/sh
+# Pre-commit: fast checks on staged files only.
+# The full suite (typecheck + tests) runs on pre-push; CI is the authority.
+set -e
+
+# Call binaries from node_modules/.bin directly — works without yarn on PATH.
+PATH="$(git rev-parse --show-toplevel)/node_modules/.bin:$PATH"
+
+files=$(git diff --cached --name-only --diff-filter=ACMR |
+  grep -E '\.(ts|tsx|mts|mjs|js|jsx|css|md|json|ya?ml)$' || true)
+
+if [ -z "$files" ]; then
+  exit 0
+fi
+
+echo "pre-commit › prettier --check"
+# shellcheck disable=SC2086 — word splitting on file list is intended
+prettier --check $files
+
+lintable=$(echo "$files" | grep -E '\.(ts|tsx|mts|mjs|js|jsx)$' || true)
+if [ -n "$lintable" ]; then
+  echo "pre-commit › eslint"
+  # shellcheck disable=SC2086
+  eslint $lintable
+fi
