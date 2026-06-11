@@ -20,6 +20,17 @@ export default async function ProjectPage({ params }: Props) {
   const project = projects.find((p) => p.slug === slug);
   if (!project) notFound();
 
+  const linkEntries: [label: string, href: string | undefined][] = [
+    ["Live site", project.links.live],
+    ["Source code", project.links.repo],
+    ["API source", project.links.api],
+    ["App Store", project.links.ios],
+    ["Google Play", project.links.android],
+  ];
+  const visibleLinks = linkEntries.filter((entry): entry is [string, string] =>
+    Boolean(entry[1]),
+  );
+
   const sections = [
     { heading: "Problem", body: project.caseStudy.problem },
     { heading: "Approach", body: project.caseStudy.approach },
@@ -42,29 +53,13 @@ export default async function ProjectPage({ params }: Props) {
         ))}
       </ul>
 
-      {(project.links.live || project.links.repo || project.links.api) && (
-        <p className="mt-4 flex gap-6">
-          {project.links.live && (
-            <a
-              href={project.links.live}
-              className="text-accent hover:underline"
-            >
-              Live site
+      {visibleLinks.length > 0 && (
+        <p className="mt-4 flex flex-wrap gap-6">
+          {visibleLinks.map(([label, href]) => (
+            <a key={label} href={href} className="text-accent hover:underline">
+              {label}
             </a>
-          )}
-          {project.links.repo && (
-            <a
-              href={project.links.repo}
-              className="text-accent hover:underline"
-            >
-              Source code
-            </a>
-          )}
-          {project.links.api && (
-            <a href={project.links.api} className="text-accent hover:underline">
-              API source
-            </a>
-          )}
+          ))}
         </p>
       )}
 
