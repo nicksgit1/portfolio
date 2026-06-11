@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
   // NEXT_PUBLIC_BASE_PATH=/portfolio; local dev serves from `/`.
   basePath: process.env.NEXT_PUBLIC_BASE_PATH ?? "",
 
+  // Emit each route as route/index.html instead of route.html so that
+  // trailing-slash URLs (e.g. /projects/) resolve on GitHub Pages, which
+  // serves static files with no rewrite rules.
+  trailingSlash: true,
+
   // next/image optimization needs a server; not used yet, but this keeps
   // a future <Image> from silently breaking the static export.
   images: { unoptimized: true },
