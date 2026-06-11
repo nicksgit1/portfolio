@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "postinstall": "git config core.hooksPath .githooks || true",
     "test": "vitest",
     "test:run": "vitest run",
     "format": "prettier --write .",

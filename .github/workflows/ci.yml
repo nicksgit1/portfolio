@@ -30,6 +30,10 @@ jobs:
       - name: Check formatting
         run: yarn format:check
 
+      # Catches type errors in test files, which `next build` doesn't compile.
+      - name: Typecheck
+        run: yarn typecheck
+
       - name: Test
         run: yarn test:run
 

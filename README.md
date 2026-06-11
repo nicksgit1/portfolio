@@ -22,6 +22,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `yarn build`        | Production build             |
 | `yarn start`        | Serve the production build   |
 | `yarn lint`         | ESLint                       |
+| `yarn typecheck`    | TypeScript, no emit          |
 | `yarn test`         | Vitest (watch mode)          |
 | `yarn test:run`     | Vitest (single pass, CI)     |
 | `yarn format`       | Prettier write               |
@@ -33,6 +34,13 @@ Open [http://localhost:3000](http://localhost:3000).
 src/
   app/        # Next.js App Router pages and layouts
 ```
+
+## Git hooks
+
+`yarn install` wires up the hooks in `.githooks/` (via `core.hooksPath`, no
+dependencies). Pre-commit runs Prettier and ESLint on staged files; pre-push
+runs the typecheck and test suite. CI runs the same checks and remains the
+source of truth.
 
 ## Conventions
 
