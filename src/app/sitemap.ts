@@ -2,6 +2,11 @@ import type { MetadataRoute } from "next";
 import { projects } from "@/content/projects";
 import { site } from "@/content/site";
 
+// With output: "export", metadata files compile to route handlers,
+// which must opt into static generation explicitly or `next build`
+// fails collecting /sitemap.xml.
+export const dynamic = "force-static";
+
 /**
  * Built statically into out/sitemap.xml. Routes are enumerated from the
  * same sources the pages render from, so a new project case study lands
