@@ -14,6 +14,9 @@ export type Project = {
     /** Separate backend/API repo, for projects split across repos. */
     api?: string;
     live?: string;
+    /** App store listings, for projects shipped as mobile apps. */
+    ios?: string;
+    android?: string;
   };
   featured: boolean;
 };
@@ -46,6 +49,57 @@ export const projects: Project[] = [
     ],
     links: {
       repo: "https://github.com/Enterprise-CMCS/macpro-mdct-mcr",
+    },
+    featured: true,
+  },
+  {
+    slug: "myrutgers-portal",
+    title: "myRutgers portal and mobile app",
+    summary:
+      "The next-generation student portal for Rutgers University — a React web app and Flutter mobile app serving 200,000+ users per month across four campuses. I joined as senior engineer to get the project on track and out the door, leading a team of eight student developers.",
+    caseStudy: {
+      problem:
+        "myRutgers is the front door to university life for every Rutgers student and employee: registration, paychecks, benefits, alerts, campus services. The legacy uPortal-based site couldn't deliver the personalized, mobile-first experience students expected, and the rebuild — React on web, Flutter on mobile, a Spring Boot API bridging old and new backend services — was underway but struggling to ship. There were no automated tests, releases were manual, and the team, composed largely of part-time student developers, was building without direct input from the students they were building for.",
+      approach:
+        "The architecture was already chosen; my job was to make it shippable. I came in as lead developer and the interface to university stakeholders, and focused on the practices the project was missing. I introduced automated testing where there had been none, replaced manual Xcode and Play Console uploads with CI/CD through GitHub Actions and Fastlane, and started surveying students so feature decisions traced back to actual needs rather than assumptions. I built out documentation in Confluence and a Next.js docs site so a rotating student team could onboard without tribal knowledge. Day to day I was the lead reviewer across the codebases, mentoring eight student developers and coordinating with the other engineers from onboarding through production releases.",
+      result:
+        "The portal shipped and runs today at my.rutgers.edu, serving 200,000+ monthly users across Rutgers' four campuses, with the mobile app live on both stores. The practices stuck: automated deployments and good code review practices outlived my tenure. If I did it again, I'd introduce automated testing alongside the first CI pipeline rather than after it — new practices land easiest when they arrive together.",
+    },
+    stack: [
+      "React",
+      "Flutter",
+      "Dart",
+      "Java",
+      "Spring Boot",
+      "Firebase",
+      "GitHub Actions",
+      "Fastlane",
+    ],
+    links: {
+      live: "https://my.rutgers.edu/",
+      ios: "https://apps.apple.com/us/app/myrutgers/id1564303921",
+    },
+    featured: true,
+  },
+  {
+    slug: "msu-mobile-app",
+    title: "MSU Mobile app",
+    summary:
+      "The official Michigan State University app — campus maps, courses, grades, dining, and bus routes for one of the largest universities in the US. I was the lead designer and a mobile developer on the four-person team that built and launched it.",
+    caseStudy: {
+      problem:
+        "Michigan State serves a campus community of over 100,000 students, staff, and faculty across a 5,200-acre campus, and in 2017 had no modern official mobile app. Information students needed daily — class schedules, grades, dining menus, bus arrivals, campus navigation — was scattered across separate websites never designed for phones. The university needed a single, fast, native experience that could survive the load spikes of a Big Ten campus: the first day of classes, move-in week, game days.",
+      approach:
+        "I led design and worked as one of the mobile developers, so the process started long before code: I interviewed students about how they actually navigated campus life, turned those findings into design case studies, and iterated mockups against real student feedback before we committed to building a screen. On the engineering side, we built fully native clients in Swift and Kotlin rather than a cross-platform wrapper, because map performance and platform-correct interactions were the product. Both clients speak GraphQL to a Ruby on Rails backend, chosen so each screen fetches exactly the data it needs — a meaningful saving on campus networks and a contract that let iOS and Android evolve independently.",
+      result:
+        "The app launched to the full campus community of 100,000+ students and staff and sustained over 8,000 concurrent users at peak. It remains MSU's official app on both stores today, eight years later — the architecture we laid down is still shipping releases. Building it taught me the discipline I'd carry forward: research before design, design the API contract first, and treat peak load as the requirement, not the edge case.",
+    },
+    stack: ["Swift", "Kotlin", "GraphQL", "Ruby on Rails"],
+    links: {
+      live: "https://mobile.msu.edu/",
+      ios: "https://apps.apple.com/us/app/michigan-state-university/id1356578108",
+      android:
+        "https://play.google.com/store/apps/details?id=edu.msu.msumobile",
     },
     featured: true,
   },
