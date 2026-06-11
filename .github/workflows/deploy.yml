@@ -1,7 +1,12 @@
 name: Deploy to GitHub Pages
 
 on:
-  push:
+  # Deploy only after CI has passed on main. Branch protection gates
+  # PRs, but deploying on raw push would race CI (or ship an admin
+  # push that skipped it) — a red main must never reach Pages.
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
     branches: [main]
   # Allow manual redeploys from the Actions tab.
   workflow_dispatch:
@@ -18,9 +23,18 @@ concurrency:
 
 jobs:
   build:
+    # workflow_dispatch carries no workflow_run payload — treat it as a
+    # deliberate manual override; otherwise require the CI run to be green.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Deploy the exact commit CI validated, not whatever main has
+          # moved to since the run was queued.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - run: corepack enable
 

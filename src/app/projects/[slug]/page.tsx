@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { StackList } from "@/components/StackList";
 import { projects } from "@/content/projects";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -42,16 +43,7 @@ export default async function ProjectPage({ params }: Props) {
       <h1 className="font-display text-3xl font-bold">{project.title}</h1>
       <p className="mt-4 max-w-prose text-lg text-muted">{project.summary}</p>
 
-      <ul aria-label="Tech stack" className="mt-6 flex flex-wrap gap-2">
-        {project.stack.map((tech) => (
-          <li
-            key={tech}
-            className="rounded-full border border-border bg-glow-violet/10 px-3 py-0.5 text-xs text-muted"
-          >
-            {tech}
-          </li>
-        ))}
-      </ul>
+      <StackList stack={project.stack} className="mt-6" />
 
       {visibleLinks.length > 0 && (
         <p className="mt-4 flex flex-wrap gap-6">
