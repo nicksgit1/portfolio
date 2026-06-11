@@ -21,13 +21,13 @@ export default function AboutPage() {
           applications that state agencies across the country rely on.
         </p>
         <p>
-          I believe the best engineering leaders stay close to the work. I
-          still review code across our suite, still get excited about the
-          JavaScript ecosystem (TypeScript, React, Next.js, Vite), and still
-          hold the same goal I wrote down years ago: clean, fast,
-          human-benefiting code. Civic tech made that goal concrete — software
-          that makes government work better is the most direct way I&apos;ve
-          found to make the world a little better, one line at a time.
+          I believe the best engineering leaders stay close to the work. I still
+          review code across our suite, still get excited about the JavaScript
+          ecosystem (TypeScript, React, Next.js, Vite), and still hold the same
+          goal I wrote down years ago: clean, fast, human-benefiting code. Civic
+          tech made that goal concrete — software that makes government work
+          better is the most direct way I&apos;ve found to make the world a
+          little better, one line at a time.
         </p>
         <p>
           I&apos;m looking for engineering management and director roles, and

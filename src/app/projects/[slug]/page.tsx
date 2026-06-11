@@ -45,12 +45,18 @@ export default async function ProjectPage({ params }: Props) {
       {(project.links.live || project.links.repo || project.links.api) && (
         <p className="mt-4 flex gap-6">
           {project.links.live && (
-            <a href={project.links.live} className="text-accent hover:underline">
+            <a
+              href={project.links.live}
+              className="text-accent hover:underline"
+            >
               Live site
             </a>
           )}
           {project.links.repo && (
-            <a href={project.links.repo} className="text-accent hover:underline">
+            <a
+              href={project.links.repo}
+              className="text-accent hover:underline"
+            >
               Source code
             </a>
           )}
