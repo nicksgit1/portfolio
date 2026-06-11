@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <article>
-      <h1 className="text-3xl font-bold tracking-tight">About</h1>
+      <h1 className="font-display text-3xl font-bold">About</h1>
       <div className="mt-6 max-w-prose space-y-4 leading-relaxed">
         <p>
           I&apos;m Nicholas Summers — an engineering leader and full-stack
@@ -35,7 +35,7 @@ export default function AboutPage() {
           matters. Also: I am powered almost entirely by burritos.
         </p>
       </div>
-      <h2 className="mt-10 text-xl font-semibold">Get in touch</h2>
+      <h2 className="mt-10 font-display text-xl font-semibold">Get in touch</h2>
       <p className="mt-3 max-w-prose">
         The fastest way to reach me is email:{" "}
         <a href={`mailto:${site.email}`} className="text-accent underline">
