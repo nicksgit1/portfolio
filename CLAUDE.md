@@ -55,7 +55,9 @@ hook loop to keep commits and pushes fast.
 6. **Every factual claim in site copy must be verifiable.** Case-study content
    is checked against the actual repos before it ships — a hiring manager will
    open the links. Never write a "what I'd do differently" claim without
-   confirming the repo doesn't already do it.
+   confirming the repo doesn't already do it. This applies to code comments
+   too: a comment claiming something is verified or measured must be backed
+   by a script or test in the repo (see `scripts/check-contrast.mjs`).
 7. **No escape-hatch documentation.** Don't mention bypass mechanisms
    (`--no-verify` and similar) in code comments, the README, or commit
    messages. This repo demonstrates standards; don't advertise ways around
@@ -70,6 +72,31 @@ hook loop to keep commits and pushes fast.
 - Use the design tokens defined in `globals.css` (`@theme`) rather than
   hard-coded colors/sizes.
 - Prose copy: sentence case headings, no exclamation marks, concrete over hype.
+
+## Design language (retrowave system)
+
+- Color semantics are fixed: pink + underline = at-rest link (`.neon-link`);
+  cyan = "hot" states (hover, focus, current page); `--glow-*` tokens are for
+  gradients and glows only, never text. Don't invent new meanings for these
+  colors.
+- The site is dark-only by design (rationale in `globals.css`).
+- All background/scene art is pure CSS in `src/app/scene.css` — contracts are
+  documented at the top of that file (relative-footer anchor, no stacking
+  contexts on body/footer, main's clearance padding). New colors go through
+  tokens in `globals.css`, and `yarn check:contrast` must stay green.
+- Visual changes are verified in a real browser before commit (`yarn dev` +
+  screenshot); refactors of visual code get a before/after comparison
+  demonstrating zero visual diff.
+
+## AI-session environment notes
+
+Sandboxed sessions (e.g. Cowork) typically cannot reach npm/yarn registries
+or GitHub, and `node_modules` may be platform-mismatched for native binaries.
+What works there: `./node_modules/.bin/{tsc,eslint,prettier}` invoked
+directly, and `node scripts/*.mjs`. What doesn't: `yarn install`, `vitest`,
+`next build`, and `git push`/`pull`. Defer tests and builds to the owner's
+machine (the pre-push hook covers them) and CI, and ask the owner to pull
+`main` after a merge before cutting a new branch from it.
 
 ## Branch flow
 
