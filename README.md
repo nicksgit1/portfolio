@@ -21,6 +21,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `yarn dev`          | Start the development server |
 | `yarn build`        | Static export to `out/`      |
 | `yarn lint`         | ESLint                       |
+| `yarn typecheck`    | TypeScript, no emit          |
 | `yarn test`         | Vitest (watch mode)          |
 | `yarn test:run`     | Vitest (single pass, CI)     |
 | `yarn format`       | Prettier write               |
@@ -44,6 +45,13 @@ project-site subpath. To preview the production build locally:
 yarn build
 npx serve out
 ```
+
+## Git hooks
+
+`yarn install` wires up the hooks in `.githooks/` (via `core.hooksPath`, no
+dependencies). Pre-commit runs Prettier and ESLint on staged files; pre-push
+runs the typecheck and test suite. CI runs the same checks and remains the
+source of truth.
 
 ## Conventions
 

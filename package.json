@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "postinstall": "git config core.hooksPath .githooks || true",
     "test": "vitest",
     "test:run": "vitest run",
     "format": "prettier --write .",

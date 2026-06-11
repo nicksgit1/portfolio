@@ -1,0 +1,14 @@
+#!/bin/sh
+# Pre-push: the slower checks that protect remote branches.
+# Lint/format already ran per-commit; CI re-runs everything as the authority.
+set -e
+
+# Call binaries from node_modules/.bin directly — works without yarn on PATH.
+root="$(git rev-parse --show-toplevel)"
+PATH="$root/node_modules/.bin:$PATH"
+
+echo "pre-push › typecheck"
+tsc --noEmit
+
+echo "pre-push › tests"
+vitest run
