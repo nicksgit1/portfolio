@@ -34,6 +34,11 @@ jobs:
       - name: Typecheck
         run: yarn typecheck
 
+      # Verifies WCAG AA ratios for the design tokens and the
+      # decorative background scene (parsed from globals.css).
+      - name: Contrast
+        run: yarn check:contrast
+
       - name: Test
         run: yarn test:run
 

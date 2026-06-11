@@ -1,4 +1,9 @@
 @import "tailwindcss";
+/* The retrowave background scene (sky, skylines, sun, grid) lives in
+   its own file. Importing into the components layer keeps the scene
+   (and every custom class here) below Tailwind utilities in the
+   cascade, so a utility can always override a component class. */
+@import "./scene.css" layer(components);
 
 /*
  * Design tokens — retrowave palette.
@@ -28,6 +33,11 @@
   --glow-pink: #ff2d95;
   --glow-cyan: #22d3ee;
   --glow-violet: #7c3aed;
+
+  /* Warm pair for the setting sun and the towers' lit windows — the
+     sun's crown and the window lights share --glow-gold by design. */
+  --glow-gold: #ffd76a;
+  --glow-amber: #ffaf5e;
 }
 
 @theme inline {
@@ -41,6 +51,8 @@
   --color-glow-pink: var(--glow-pink);
   --color-glow-cyan: var(--glow-cyan);
   --color-glow-violet: var(--glow-violet);
+  --color-glow-gold: var(--glow-gold);
+  --color-glow-amber: var(--glow-amber);
 
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
@@ -51,6 +63,9 @@
   --font-display: var(--font-orbitron, var(--font-sans));
 }
 
+/* NOTE: the scene's z-index:-1 layers (see scene.css) rely on body and
+   footer NOT creating stacking contexts. Don't add transform, filter,
+   opacity, or isolation to either, or the scene will stack wrong. */
 body {
   background: var(--background);
   color: var(--foreground);
@@ -61,80 +76,22 @@ body {
  * Standard link treatment. Pink + underline at rest makes every link
  * unmistakable; hover and keyboard focus drop the underline and shift
  * to cyan, pairing with surface highlights like the card glow. One
- * class so the affordance stays consistent site-wide.
+ * class so the affordance stays consistent site-wide. Lives in the
+ * components layer so utilities can override it when composed.
  */
-.neon-link {
-  color: var(--accent);
-  text-decoration-line: underline;
-  text-underline-offset: 4px;
-  transition: color 150ms ease;
-}
+@layer components {
+  .neon-link {
+    color: var(--accent);
+    text-decoration-line: underline;
+    text-underline-offset: 4px;
+    transition: color 150ms ease;
+  }
 
-.neon-link:hover,
-.neon-link:focus-visible {
-  color: var(--accent-2);
-  text-decoration-line: none;
-}
-
-/*
- * Retrowave grid horizon (Footer). Purely decorative — the element is
- * aria-hidden and pointer-events-none, stretched behind the footer
- * content. A perspective-transformed plane of violet gridlines recedes
- * toward a glowing pink horizon that doubles as the footer's top
- * border. The mask keeps lines faint where text sits (contrast stays
- * effectively that of the solid background) and brightens them below.
- * Static by design: no animation, no WCAG 2.2.2 moving-content issue.
- */
-.synth-grid {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.synth-grid::before {
-  content: "";
-  position: absolute;
-  inset: 0 -25%;
-  background-image:
-    linear-gradient(
-      to right,
-      color-mix(in srgb, var(--glow-violet) 60%, transparent) 2px,
-      transparent 2px
-    ),
-    linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--glow-violet) 60%, transparent) 2px,
-      transparent 2px
-    );
-  background-size: 44px 44px;
-  transform: perspective(220px) rotateX(58deg);
-  transform-origin: top center;
-  /* Faint under the text near the horizon, full strength below it. */
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 3%,
-    rgb(0 0 0 / 0.16) 35%,
-    rgb(0 0 0 / 0.55) 62%,
-    black 88%
-  );
-}
-
-.synth-grid::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 2px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--glow-pink) 30%,
-    var(--glow-pink) 70%,
-    transparent
-  );
-  box-shadow: 0 0 16px 2px color-mix(in srgb, var(--glow-pink) 60%, transparent);
+  .neon-link:hover,
+  .neon-link:focus-visible {
+    color: var(--accent-2);
+    text-decoration-line: none;
+  }
 }
 
 /* Visible focus for keyboard users — a WCAG 2.4.7 requirement.
@@ -145,7 +102,9 @@ body {
   border-radius: 2px;
 }
 
-/* Respect users who turn off animation (WCAG 2.3.3 / prefers-reduced-motion). */
+/* Respect users who turn off animation (WCAG 2.3.3 / prefers-reduced-motion).
+   The scene's scroll-driven animations ignore duration, so scene.css
+   carries its own explicit animation:none overrides alongside them. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

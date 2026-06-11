@@ -30,6 +30,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={orbitron.variable}>
       <body className="flex min-h-dvh flex-col antialiased">
+        {/* Site-wide decorative background: mystic-blur color blooms,
+            star field, and scanlines. Fixed behind all content, hidden
+            from assistive tech. (The city skyline lives in the Footer,
+            seated on its horizon line.) */}
+        <div aria-hidden="true" className="mystic-bg" />
         {/* Skip link: first focusable element on the page, lets keyboard
             users bypass the nav (WCAG 2.4.1). Visually hidden until focused. */}
         <a
@@ -39,7 +44,13 @@ export default function RootLayout({
           Skip to main content
         </a>
         <Header />
-        <main id="main" className="mx-auto w-full max-w-3xl flex-1 px-4 py-12">
+        {/* Generous bottom padding keeps the last content clear of the
+            footer scene — the setting sun and skyline rising above the
+            horizon, whose height is set by .city-scape in globals.css. */}
+        <main
+          id="main"
+          className="mx-auto w-full max-w-3xl flex-1 px-4 pt-12 pb-44 sm:pb-96"
+        >
           {children}
         </main>
         <Footer />

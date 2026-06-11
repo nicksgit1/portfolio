@@ -1,0 +1,652 @@
+/*
+ * The retrowave background scene. Every selector here is decorative
+ * art: the night-sky layer (.mystic-bg — blooms, stars, scanlines)
+ * rendered by a single div in layout.tsx, and the footer scene
+ * (.city-scape sun and skylines, .synth-grid horizon) rendered by the
+ * FooterScene component inside the footer. All elements are
+ * aria-hidden and pointer-events-none; colors flow through the tokens
+ * in globals.css; contrast over the art is verified by
+ * scripts/check-contrast.mjs in CI. Imported by globals.css into
+ * layer(components) so utilities can always override these classes.
+ *
+ * Contracts:
+ * - .city-scape and .synth-grid must render inside a position:
+ *   relative footer; the scape anchors to the footer's top edge.
+ * - The z-index:-1 layers require that no ancestor (body, footer)
+ *   creates a stacking context — see the note on body in globals.css.
+ * - main's bottom padding (layout.tsx) clears the scene's height.
+ */
+
+/*
+ * Mystic blur sky (site-wide). A fixed, viewport-filling layer behind
+ * all content: soft radial color blooms (pink, cyan, violet) with a
+ * faint halftone line screen over the bloom regions for retro-print
+ * texture. Fixed positioning means content scrolls over it and the
+ * gradients fade naturally — there is no edge to see. Bloom peaks are
+ * kept low so text contrast over them stays within AA — verified by
+ * scripts/check-contrast.mjs, which parses these mix percentages.
+ */
+.mystic-bg {
+  position: fixed;
+  /* Overscanned vertically so the parallax drift (translateY up to
+     1.25rem) can never expose a sky-less strip at the viewport edge. */
+  inset: -1.5rem 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      42% 46% at 8% 12%,
+      color-mix(in srgb, var(--glow-pink) 13%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      40% 45% at 88% 30%,
+      color-mix(in srgb, var(--glow-cyan) 14%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      55% 50% at 50% 80%,
+      color-mix(in srgb, var(--glow-violet) 22%, transparent),
+      transparent 72%
+    );
+}
+
+/*
+ * Star field. Three tiled layers of tiny radial-gradient points at
+ * mismatched tile sizes, so the repetition never reads as a grid.
+ * Brightness stays low (faint, decorative); static — no twinkle
+ * animation, in keeping with the no-moving-content rule.
+ */
+.mystic-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    /* small faint stars */
+    radial-gradient(
+      circle at 25px 45px,
+      color-mix(in srgb, var(--foreground) 50%, transparent) 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 180px 130px,
+      color-mix(in srgb, var(--foreground) 40%, transparent) 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 90px 220px,
+      color-mix(in srgb, var(--foreground) 45%, transparent) 1px,
+      transparent 1.5px
+    ),
+    /* medium stars (the off-palette tints below are deliberate
+       one-off star colors, not palette drift) */
+    radial-gradient(
+        circle at 310px 80px,
+        color-mix(in srgb, var(--foreground) 55%, transparent) 1.3px,
+        transparent 2px
+      ),
+    radial-gradient(
+      circle at 120px 340px,
+      rgb(196 228 255 / 0.5) 1.3px,
+      transparent 2px
+    ),
+    /* sparse brighter stars, one warm pink and one cool cyan */
+    radial-gradient(
+        circle at 420px 160px,
+        rgb(255 190 222 / 0.7) 1.6px,
+        transparent 2.6px
+      ),
+    radial-gradient(
+      circle at 150px 480px,
+      rgb(178 240 250 / 0.65) 1.6px,
+      transparent 2.6px
+    );
+  background-size:
+    260px 290px,
+    340px 310px,
+    300px 370px,
+    460px 420px,
+    430px 510px,
+    720px 640px,
+    810px 730px;
+}
+
+/*
+ * City skyline silhouettes. Two depth layers per bottom corner of the
+ * viewport, mirrored left/right via clip-path skylines — present at a
+ * glance, invisible when reading. The far layer is wider, taller, and
+ * closer to the sky color (atmospheric perspective); the near layer
+ * hugs the screen edge in a deeper violet and carries faint lit-window
+ * strips in the palette colors, echoing the reference site's side
+ * buildings. Visible at every viewport size: on phones the clamp()
+ * shrinks the footprint and the art stays dim enough to read over.
+ *
+ * The scape is anchored to the footer (bottom: 100% of it), so the
+ * buildings sit exactly on the footer's glowing horizon line and
+ * scroll with the page — grounding the scene while the sky behind
+ * keeps its parallax drift. z-index -1 places it behind page content
+ * but above the fixed sky layer (later in tree order).
+ */
+.city-scape {
+  /* The scene's shared sizing contract. The scape must be at least as
+     tall as the far towers (and the visible sun), and the sun's
+     horizon clipping depends on these agreeing — defined once here,
+     inherited by the layers below. */
+  --city-far-w: clamp(170px, 25vw, 460px);
+  --city-far-h: clamp(240px, 44vh, 440px);
+  --city-near-w: clamp(120px, 17vw, 330px);
+  --city-near-h: clamp(200px, 38vh, 370px);
+  --sun-diameter: clamp(240px, 46vw, 820px);
+
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  z-index: -1;
+  /* Tall enough for the towers and the setting sun at any width. */
+  height: max(var(--city-far-h), 30vw);
+  /* Clips the sun's submerged half at the horizon line. */
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.city-far,
+.city-near {
+  position: absolute;
+  inset: 0;
+}
+
+.city-far::before,
+.city-far::after,
+.city-near::before,
+.city-near::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+}
+
+.city-far::before,
+.city-near::before {
+  left: 0;
+}
+
+.city-far::after,
+.city-near::after {
+  right: 0;
+}
+
+/* The far layer mirrors its skyline; the near layers each have their
+   own geometry so the two sides read as one varied city, not a clone. */
+.city-far::after {
+  transform: scaleX(-1);
+}
+
+/*
+ * Vaporwave sun, mid-set on the horizon line between the two
+ * skylines. The disc fades gold through pink to violet with scanline
+ * slits cut toward its base (the classic retrowave sun); the gold
+ * echoes the amber window lights in the towers. A soft warm halo
+ * glows behind it. Pure CSS; it rides inside .city-scape, so it
+ * settles onto the line with the same entrance as the city.
+ */
+.city-sun {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: var(--sun-diameter);
+  aspect-ratio: 1;
+  /* Submerged: 52% of the disc sits below the horizon line, clipped
+     by the scape's overflow — a sun mid-set. */
+  transform: translate(-50%, 52%);
+  /* Soft warm halo behind the visible half of the disc. */
+  background: radial-gradient(
+    45% 45% at 50% 32%,
+    color-mix(in srgb, var(--glow-gold) 18%, transparent),
+    transparent 75%
+  );
+}
+
+/* The disc, with scanline slits widening toward the horizon. The
+   gradient mixes toward the background color (opaque, not
+   translucent), and the lowest band runs into the clip so it sits
+   flush on the horizon. */
+.city-sun::after {
+  content: "";
+  position: absolute;
+  inset: 2%;
+  border-radius: 50%;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--glow-gold) 88%, var(--background)),
+    color-mix(in srgb, var(--glow-amber) 76%, var(--background)) 24%,
+    color-mix(in srgb, var(--glow-pink) 62%, var(--background)) 40%,
+    color-mix(in srgb, var(--glow-violet) 58%, var(--background)) 52%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    black 0 26%,
+    transparent 26% 28%,
+    black 28% 32.5%,
+    transparent 32.5% 35%,
+    black 35% 38.5%,
+    transparent 38.5% 41.5%,
+    black 41.5% 44.5%,
+    transparent 44.5% 46.5%,
+    black 46.5%
+  );
+}
+
+.city-far::before,
+.city-far::after {
+  width: var(--city-far-w);
+  height: var(--city-far-h);
+  background: color-mix(in srgb, var(--glow-violet) 12%, var(--background));
+  clip-path: polygon(
+    0% 14%,
+    6% 14%,
+    6% 4%,
+    9% 4%,
+    9% 14%,
+    14% 14%,
+    14% 36%,
+    21% 36%,
+    21% 20%,
+    27% 20%,
+    27% 48%,
+    35% 48%,
+    35% 30%,
+    41% 30%,
+    41% 60%,
+    49% 60%,
+    49% 44%,
+    56% 44%,
+    56% 70%,
+    64% 70%,
+    64% 56%,
+    71% 56%,
+    71% 82%,
+    79% 82%,
+    79% 68%,
+    85% 68%,
+    85% 90%,
+    93% 90%,
+    93% 78%,
+    100% 78%,
+    100% 100%,
+    0% 100%
+  );
+}
+
+.city-near::before,
+.city-near::after {
+  width: var(--city-near-w);
+  height: var(--city-near-h);
+  background-color: color-mix(
+    in srgb,
+    var(--glow-violet) 22%,
+    var(--background)
+  );
+  background-repeat: no-repeat;
+}
+
+/*
+ * Near skyline, left. Window strips run the full height of their
+ * towers (bottom-anchored, capped just under each roofline). Detail
+ * layers, top of list first: an antenna beacon and a glowing cyan
+ * billboard. The silhouette carries an antenna mast and a rooftop
+ * water tower.
+ */
+.city-near::before {
+  background-image:
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--glow-pink) 85%, transparent) 40%,
+      transparent 70%
+    ),
+    linear-gradient(
+      color-mix(in srgb, var(--accent-2) 50%, transparent),
+      color-mix(in srgb, var(--accent-2) 50%, transparent)
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--accent-2) 32%, transparent) 0 2px,
+      transparent 2px 9px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--glow-gold) 30%, transparent) 0 2px,
+      transparent 2px 11px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--accent) 28%, transparent) 0 2px,
+      transparent 2px 8px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--accent-2) 20%, transparent) 0 2px,
+      transparent 2px 10px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--glow-gold) 26%, transparent) 0 2px,
+      transparent 2px 12px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--accent) 20%, transparent) 0 2px,
+      transparent 2px 9px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--accent-2) 28%, transparent) 0 2px,
+      transparent 2px 10px
+    );
+  background-size:
+    1.6% 1.4%,
+    7% 4%,
+    5% 86%,
+    5% 70%,
+    5% 76%,
+    5% 50%,
+    5% 62%,
+    5% 36%,
+    5% 46%;
+  background-position:
+    5.4% 1%,
+    49% 62%,
+    4.5% 100%,
+    19% 100%,
+    33% 100%,
+    48% 100%,
+    62% 100%,
+    75.5% 100%,
+    88% 100%;
+  clip-path: polygon(
+    0% 10%,
+    5% 10%,
+    5% 2%,
+    7% 2%,
+    7% 10%,
+    14% 10%,
+    14% 26%,
+    28% 26%,
+    28% 18%,
+    33% 18%,
+    33% 7%,
+    34.5% 7%,
+    34.5% 18%,
+    40% 18%,
+    40% 44%,
+    56% 44%,
+    56% 32%,
+    60% 32%,
+    60% 28%,
+    63% 28%,
+    63% 32%,
+    68% 32%,
+    68% 58%,
+    82% 58%,
+    82% 48%,
+    94% 48%,
+    94% 70%,
+    100% 70%,
+    100% 100%,
+    0% 100%
+  );
+}
+
+/*
+ * Near skyline, right. Its own geometry — tallest tower at the screen
+ * edge with a lit penthouse row (the warm band near its roof), an
+ * antenna beacon, a pink billboard, and a water tower. Same inward
+ * reach as the left side.
+ */
+.city-near::after {
+  background-image:
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--glow-pink) 85%, transparent) 40%,
+      transparent 70%
+    ),
+    linear-gradient(
+      color-mix(in srgb, var(--glow-gold) 40%, transparent),
+      color-mix(in srgb, var(--glow-gold) 40%, transparent)
+    ),
+    linear-gradient(
+      color-mix(in srgb, var(--accent) 45%, transparent),
+      color-mix(in srgb, var(--accent) 45%, transparent)
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--glow-gold) 26%, transparent) 0 2px,
+      transparent 2px 10px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--accent-2) 30%, transparent) 0 2px,
+      transparent 2px 9px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--accent-2) 20%, transparent) 0 2px,
+      transparent 2px 11px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--accent) 28%, transparent) 0 2px,
+      transparent 2px 8px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--glow-gold) 28%, transparent) 0 2px,
+      transparent 2px 12px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--accent-2) 30%, transparent) 0 2px,
+      transparent 2px 10px
+    );
+  background-size:
+    1.6% 1.4%,
+    11% 1.6%,
+    7% 3.5%,
+    5% 42%,
+    5% 64%,
+    5% 52%,
+    5% 80%,
+    5% 70%,
+    5% 86%;
+  background-position:
+    65% 3%,
+    95% 13%,
+    81% 30%,
+    11% 100%,
+    36% 100%,
+    51% 100%,
+    66% 100%,
+    79% 100%,
+    95% 100%;
+  clip-path: polygon(
+    0% 72%,
+    6% 72%,
+    6% 52%,
+    18% 52%,
+    18% 62%,
+    30% 62%,
+    30% 30%,
+    36% 30%,
+    36% 26%,
+    39% 26%,
+    39% 30%,
+    44% 30%,
+    44% 42%,
+    58% 42%,
+    58% 14%,
+    64% 14%,
+    64% 4%,
+    65.5% 4%,
+    65.5% 14%,
+    72% 14%,
+    72% 24%,
+    86% 24%,
+    86% 8%,
+    100% 8%,
+    100% 100%,
+    0% 100%
+  );
+}
+
+/* On narrow screens the footer text overlaps the skyline corners, so
+   the lit windows are dropped there (a 2px window dash behind 14px
+   copy fails local contrast); the plain silhouettes stay. */
+@media (max-width: 48rem) {
+  .city-near::before,
+  .city-near::after {
+    background-image: none;
+  }
+}
+
+/* Faint halftone line screen, visible only around the bloom regions. */
+.mystic-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 0.04) 0 1px,
+    transparent 1px 4px
+  );
+  mask-image: radial-gradient(70% 60% at 30% 30%, black, transparent 80%);
+}
+
+/*
+ * Retrowave grid horizon (Footer). Purely decorative — the element is
+ * aria-hidden and pointer-events-none, stretched behind the footer
+ * content. A perspective-transformed plane of violet gridlines recedes
+ * toward a glowing pink horizon that doubles as the footer's top
+ * border. The mask keeps lines faint where text sits (contrast stays
+ * effectively that of the solid background) and brightens them below.
+ * Static by design: no animation, no WCAG 2.2.2 moving-content issue.
+ */
+.synth-grid {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.synth-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0 -25%;
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--glow-violet) 60%, transparent) 2px,
+      transparent 2px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--glow-violet) 60%, transparent) 2px,
+      transparent 2px
+    );
+  background-size: 44px 44px;
+  transform: perspective(220px) rotateX(58deg);
+  transform-origin: top center;
+  /* Faint under the text near the horizon, full strength below it. */
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 3%,
+    rgb(0 0 0 / 0.16) 35%,
+    rgb(0 0 0 / 0.55) 62%,
+    black 88%
+  );
+}
+
+.synth-grid::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--glow-pink) 30%,
+    var(--glow-pink) 70%,
+    transparent
+  );
+  box-shadow: 0 0 16px 2px color-mix(in srgb, var(--glow-pink) 60%, transparent);
+}
+
+/*
+ * Scroll-driven parallax — sky only. The blooms and stars drift a
+ * little over the full page scroll while the city (anchored to the
+ * footer) scrolls with the content, so the skyline stays seated on
+ * the footer's horizon line and the sky slides slowly behind it.
+ * Pure CSS (animation-timeline: scroll()) — a progressive
+ * enhancement; browsers without support simply keep the static
+ * scene. Explicitly disabled under prefers-reduced-motion.
+ */
+@supports (animation-timeline: scroll()) {
+  .mystic-bg,
+  .mystic-bg::before {
+    animation: parallax-drift linear both;
+    animation-timeline: scroll();
+  }
+
+  .mystic-bg {
+    --drift: -1.25rem;
+  }
+
+  /* Stars ride inside the bloom layer; a small counter-drift makes
+     their net movement about half the blooms' (they are farther). */
+  .mystic-bg::before {
+    --drift: 0.6rem;
+  }
+}
+
+/*
+ * City settle. The skyline keeps its anchor on the footer's horizon
+ * line (its resting position), but while it enters the viewport it
+ * lags upward and "touches down" on the line just as it is fully
+ * revealed — parallax that always ends seated. The view() timeline
+ * makes this page-length independent: on short pages the skyline is
+ * already fully entered at load, so it simply rests on the line.
+ */
+@supports (animation-timeline: view()) {
+  .city-scape {
+    animation: city-settle linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 100%;
+  }
+}
+
+@keyframes city-settle {
+  from {
+    transform: translateY(-2.75rem);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes parallax-drift {
+  to {
+    transform: translateY(var(--drift, 0));
+  }
+}
+
+/* The global reduced-motion rule in globals.css zeroes durations, but
+   scroll-driven animations ignore duration — the scene's drift and
+   settle must be switched off explicitly (WCAG 2.3.3). */
+@media (prefers-reduced-motion: reduce) {
+  .mystic-bg,
+  .mystic-bg::before,
+  .city-scape {
+    animation: none !important;
+  }
+}

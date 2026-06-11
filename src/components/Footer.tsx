@@ -1,11 +1,10 @@
+import { FooterScene } from "@/components/FooterScene";
 import { site } from "@/content/site";
 
 export function Footer() {
   return (
     <footer className="relative">
-      {/* Decorative retrowave horizon behind the content — hidden from
-          assistive tech. Its glowing top line is the footer's border. */}
-      <div aria-hidden="true" className="synth-grid" />
+      <FooterScene />
       <div className="relative mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-4 px-4 pt-10 pb-28 text-sm text-muted">
         <p>
           © {new Date().getFullYear()} {site.name}

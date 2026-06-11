@@ -7,6 +7,7 @@
     "build": "next build",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
+    "check:contrast": "node scripts/check-contrast.mjs",
     "postinstall": "git config core.hooksPath .githooks || true",
     "test": "vitest",
     "test:run": "vitest run",
