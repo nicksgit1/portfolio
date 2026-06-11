@@ -73,7 +73,8 @@ body {
  * no edge to see. Purely decorative: aria-hidden, pointer-events-none,
  * static, behind everything (z-index -1; cards and other surfaces are
  * opaque and unaffected). Bloom peaks are kept low so text contrast
- * over them stays within AA (verified programmatically).
+ * over them stays within AA — verified by scripts/check-contrast.mjs,
+ * which parses these mix percentages and runs in CI.
  */
 .mystic-bg {
   position: fixed;

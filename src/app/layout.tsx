@@ -45,7 +45,8 @@ export default function RootLayout({
         </a>
         <Header />
         {/* Generous bottom padding keeps the last content clear of the
-            footer scene (the Saturn and skyline rising off the horizon). */}
+            footer scene — the setting sun and skyline rising above the
+            horizon, whose height is set by .city-scape in globals.css. */}
         <main
           id="main"
           className="mx-auto w-full max-w-3xl flex-1 px-4 pt-12 pb-44 sm:pb-96"
