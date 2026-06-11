@@ -104,6 +104,44 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    slug: "msu-campus-maps",
+    title: "MSU campus maps",
+    summary:
+      "The official campus map for Michigan State University — a PHP and JavaScript web app with an interactive map of every building, parking lot, and bus route on one of the largest campuses in the US. I built it from the ground up as a student engineer, and it's still in production at maps.msu.edu more than nine years later.",
+    caseStudy: {
+      problem:
+        "MSU's campus covers 5,200 acres and hundreds of buildings, and the existing campus map wasn't built for how people actually arrived at it: on a phone, mid-walk, looking for a building, a visitor parking lot, or a construction detour. The university needed a map that worked on any device, met accessibility standards, and could be maintained as campus changed — new buildings, closed roads, shifting parking — without a redesign each time.",
+      approach:
+        "I rebuilt the site from scratch in PHP, JavaScript, and MySQL, iterating on the previous version rather than discarding what worked. The core of the rebuild was the interactive map: searchable buildings and parking with shareable deep links, so departments could link directly to a location (?location= URLs that still work today). I introduced responsive design so a single codebase served desktop and mobile, optimized the site for SEO, and ran accessibility reviews to hold it to WCAG AA — campus maps are exactly the kind of site where a screen-reader user can't be an afterthought.",
+      result:
+        "The site runs today at maps.msu.edu, serving over 8,000 hits a day at peak, and the location deep-links I designed are still how campus departments link to buildings. This was one of the first production websites I ever built. Going back today I'd add an automated test suite and accessibility checks in CI from the first commit — the same practices I now require of my own teams.",
+    },
+    stack: ["PHP", "JavaScript", "MySQL", "HTML/CSS"],
+    links: {
+      live: "https://maps.msu.edu/",
+    },
+    featured: true,
+  },
+  {
+    slug: "msu-search-services",
+    title: "MSU search services",
+    summary:
+      "The search layer for Michigan State University — five web properties including search.msu.edu, the people directory, and the A–Z index — averaging over 400,000 sessions per month. I maintained and modernized the suite as a student software engineer.",
+    caseStudy: {
+      problem:
+        "Search is how most people navigate a university the size of MSU: find a person, a department, a page across hundreds of independently run sites. The search properties predated responsive design and modern accessibility standards, and each needed continuous updates to stay accurate, fast, and usable on the phones most visitors were now arriving on.",
+      approach:
+        "I wasn't the lead on this suite — I supported it, and that's where I learned to work in production code I didn't write. search.msu.edu itself was built on AngularJS (Angular 1) with PHP behind it; I updated and restyled the properties, brought responsive design to the templates, optimized for SEO, and ran accessibility reviews across MSU's web properties to maintain WCAG AA compliance — the skip links and accessibility statements on those pages today reflect that work.",
+      result:
+        "The five properties handled over 400,000 sessions per month and remain in service at search.msu.edu. The work was my proving ground: it's what landed me the spot on the MSU mobile app team, and the accessibility habits I built here became a standard I've carried through every project since — including the federal WCAG compliance work on the CMS suite.",
+    },
+    stack: ["AngularJS", "PHP", "JavaScript", "MySQL", "HTML/CSS"],
+    links: {
+      live: "https://search.msu.edu/",
+    },
+    featured: true,
+  },
+  {
     slug: "grocery-shopping-app",
     title: "Grocery shopping app",
     summary:
