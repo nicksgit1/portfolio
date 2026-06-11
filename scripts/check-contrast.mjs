@@ -3,9 +3,9 @@
  * background scene. Backs the "verified programmatically" claims in
  * src/app/globals.css — runs in CI (`yarn check:contrast`).
  *
- * Everything is parsed from globals.css itself (token hexes, bloom
- * peak percentages, the near-skyline mix), so the checks cannot drift
- * from the stylesheet they verify.
+ * Everything is parsed from the stylesheets themselves — token hexes
+ * from globals.css, bloom peak percentages and the near-skyline mix
+ * from scene.css — so the checks cannot drift from what they verify.
  *
  * Checks (all against WCAG 2.1 AA, 4.5:1 for normal text):
  *   1. Every text token (foreground, muted, accent, accent-2) against
@@ -17,10 +17,9 @@
  */
 import { readFileSync } from "node:fs";
 
-const css = readFileSync(
-  new URL("../src/app/globals.css", import.meta.url),
-  "utf8",
-);
+const css = ["globals.css", "scene.css"]
+  .map((f) => readFileSync(new URL(`../src/app/${f}`, import.meta.url), "utf8"))
+  .join("\n");
 
 // --- parse tokens ---------------------------------------------------
 
