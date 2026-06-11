@@ -172,7 +172,7 @@ body {
   bottom: 100%;
   left: 0;
   z-index: -1;
-  height: clamp(170px, 30vh, 280px);
+  height: clamp(240px, 44vh, 440px);
   pointer-events: none;
 }
 
@@ -204,8 +204,8 @@ body {
 
 .city-far::before,
 .city-far::after {
-  width: clamp(130px, 20vw, 400px);
-  height: clamp(170px, 30vh, 280px);
+  width: clamp(170px, 25vw, 460px);
+  height: clamp(240px, 44vh, 440px);
   background: color-mix(in srgb, var(--glow-violet) 12%, var(--background));
   clip-path: polygon(
     0% 14%,
@@ -245,8 +245,8 @@ body {
 
 .city-near::before,
 .city-near::after {
-  width: clamp(90px, 13vw, 260px);
-  height: clamp(150px, 26vh, 230px);
+  width: clamp(120px, 17vw, 330px);
+  height: clamp(200px, 38vh, 370px);
   /* Base silhouette + lit-window strips: narrow columns of repeating
      window rows, bottom-anchored inside specific towers. */
   background-color: color-mix(
@@ -446,6 +446,32 @@ body {
   }
 }
 
+/*
+ * City settle. The skyline keeps its anchor on the footer's horizon
+ * line (its resting position), but while it enters the viewport it
+ * lags upward and "touches down" on the line just as it is fully
+ * revealed — parallax that always ends seated. The view() timeline
+ * makes this page-length independent: on short pages the skyline is
+ * already fully entered at load, so it simply rests on the line.
+ */
+@supports (animation-timeline: view()) {
+  .city-scape {
+    animation: city-settle linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 100%;
+  }
+}
+
+@keyframes city-settle {
+  from {
+    transform: translateY(-2.75rem);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
 @keyframes parallax-drift {
   to {
     transform: translateY(var(--drift, 0));
@@ -472,9 +498,10 @@ body {
   }
 
   /* Scroll-driven animations ignore duration, so the parallax drift
-     must be switched off explicitly. */
+     and city settle must be switched off explicitly. */
   .mystic-bg,
-  .mystic-bg::before {
+  .mystic-bg::before,
+  .city-scape {
     animation: none !important;
   }
 }
