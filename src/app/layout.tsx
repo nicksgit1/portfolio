@@ -44,7 +44,12 @@ export default function RootLayout({
           Skip to main content
         </a>
         <Header />
-        <main id="main" className="mx-auto w-full max-w-3xl flex-1 px-4 py-12">
+        {/* Generous bottom padding keeps the last content clear of the
+            footer scene (the Saturn and skyline rising off the horizon). */}
+        <main
+          id="main"
+          className="mx-auto w-full max-w-3xl flex-1 px-4 pt-12 pb-44 sm:pb-56"
+        >
           {children}
         </main>
         <Footer />

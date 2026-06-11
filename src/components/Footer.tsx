@@ -7,6 +7,7 @@ export function Footer() {
           grid's glowing top line is the footer's border, and the city
           skyline sits on that line, rising above the footer. */}
       <div aria-hidden="true" className="city-scape">
+        <div className="city-sun" />
         <div className="city-far" />
         <div className="city-near" />
       </div>
