@@ -150,6 +150,74 @@ body {
     810px 730px;
 }
 
+/*
+ * City skyline silhouettes. Two mirrored clip-path skylines pinned to
+ * the bottom corners of the viewport, in a violet just above the
+ * background color — present at a glance, invisible when reading.
+ * Tallest towers hug the screen edge and step down toward the content
+ * column. Fixed and decorative like the rest of the scene; the element
+ * is hidden below the xl breakpoint in markup so it never crowds text.
+ */
+.city-scape {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.city-scape::before,
+.city-scape::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: clamp(150px, 16vw, 270px);
+  height: 220px;
+  background: color-mix(in srgb, var(--glow-violet) 16%, var(--background));
+  clip-path: polygon(
+    0% 14%,
+    6% 14%,
+    6% 4%,
+    9% 4%,
+    9% 14%,
+    14% 14%,
+    14% 36%,
+    21% 36%,
+    21% 20%,
+    27% 20%,
+    27% 48%,
+    35% 48%,
+    35% 30%,
+    41% 30%,
+    41% 60%,
+    49% 60%,
+    49% 44%,
+    56% 44%,
+    56% 70%,
+    64% 70%,
+    64% 56%,
+    71% 56%,
+    71% 82%,
+    79% 82%,
+    79% 68%,
+    85% 68%,
+    85% 90%,
+    93% 90%,
+    93% 78%,
+    100% 78%,
+    100% 100%,
+    0% 100%
+  );
+}
+
+.city-scape::before {
+  left: 0;
+}
+
+.city-scape::after {
+  right: 0;
+  transform: scaleX(-1);
+}
+
 /* Faint halftone line screen, visible only around the bloom regions. */
 .mystic-bg::after {
   content: "";
