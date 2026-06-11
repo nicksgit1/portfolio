@@ -48,10 +48,22 @@ jobs:
   # E2e tests run against the built static export in a real browser.
   # PR-only by design: they gate merges, and main re-running them on the
   # identical merged commit would add minutes without adding signal.
+  #
+  # Two passes: the root build, and the /portfolio build that the deploy
+  # workflow actually ships (see NEXT_PUBLIC_BASE_PATH in deploy.yml) —
+  # otherwise basePath regressions reach production untested.
   e2e:
-    name: End-to-end tests
+    name: End-to-end tests (${{ matrix.name }})
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: root
+            base-path: ""
+          - name: subpath
+            base-path: /portfolio
     steps:
       - uses: actions/checkout@v4
 
@@ -69,11 +81,15 @@ jobs:
 
       - name: Build and run e2e tests
         run: yarn e2e
+        env:
+          # Drives the build, the static server, and the specs alike —
+          # see playwright.config.ts.
+          NEXT_PUBLIC_BASE_PATH: ${{ matrix.base-path }}
 
       - name: Upload Playwright report
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.name }}
           path: playwright-report/
           retention-days: 7
