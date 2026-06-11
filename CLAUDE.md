@@ -36,7 +36,7 @@ yarn format   # Prettier write
    states, 4.5:1 text contrast, keyboard operability. New components get a
    vitest-axe test.
 2. **Conventional Commits.** `type: imperative summary` (≤70 chars). Add a body
-   explaining *why* for non-obvious changes. One logical change per commit.
+   explaining _why_ for non-obvious changes. One logical change per commit.
    Never commit failing tests or a broken build.
 3. **Tests accompany features.** A new component or page ships with its test in
    the same commit (or same PR).

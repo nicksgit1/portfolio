@@ -11,9 +11,10 @@ describe("Home page", () => {
 
   it("links to the full projects list", () => {
     render(<Home />);
-    expect(
-      screen.getByRole("link", { name: "All projects" }),
-    ).toHaveAttribute("href", "/projects");
+    expect(screen.getByRole("link", { name: "All projects" })).toHaveAttribute(
+      "href",
+      "/projects",
+    );
   });
 
   it("has no accessibility violations", async () => {

@@ -20,7 +20,10 @@ export default function Home() {
           <h2 id="featured-heading" className="text-2xl font-semibold">
             Selected work
           </h2>
-          <Link href="/projects" className="text-sm text-accent hover:underline">
+          <Link
+            href="/projects"
+            className="text-sm text-accent hover:underline"
+          >
             All projects
           </Link>
         </div>
