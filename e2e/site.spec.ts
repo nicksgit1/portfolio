@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { BASE } from "./base-path";
+import { projects } from "../src/content/projects";
 
 test.describe("home page", () => {
   test("renders the intro from the static export", async ({ page }) => {
@@ -38,9 +39,9 @@ test("header navigation reaches every page", async ({ page }) => {
 
 test("projects page lists every project", async ({ page }) => {
   await page.goto(`${BASE}/projects/`);
-  const cards = page.getByRole("article");
-  // At least the three known case studies; avoids breaking when one is added.
-  await expect(cards).not.toHaveCount(0);
+  // Exact count from the content source: a project silently missing
+  // from the page is precisely the regression this should catch.
+  await expect(page.getByRole("article")).toHaveCount(projects.length);
   await expect(
     page.getByRole("link", { name: "CMS MDCT reporting suite" }),
   ).toBeVisible();
