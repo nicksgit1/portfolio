@@ -42,7 +42,7 @@ export default async function ProjectPage({ params }: Props) {
         ))}
       </ul>
 
-      {(project.links.live || project.links.repo) && (
+      {(project.links.live || project.links.repo || project.links.api) && (
         <p className="mt-4 flex gap-6">
           {project.links.live && (
             <a href={project.links.live} className="text-accent hover:underline">
@@ -52,6 +52,11 @@ export default async function ProjectPage({ params }: Props) {
           {project.links.repo && (
             <a href={project.links.repo} className="text-accent hover:underline">
               Source code
+            </a>
+          )}
+          {project.links.api && (
+            <a href={project.links.api} className="text-accent hover:underline">
+              API source
             </a>
           )}
         </p>
