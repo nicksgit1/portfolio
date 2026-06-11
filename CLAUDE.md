@@ -75,10 +75,6 @@ tests. CI runs the same checks and is the authority.
 unpushed, prefer amending/rewriting its history over stacking fix-up
 commits; once pushed, never rewrite.
 
-Note: the README is tracked as `README.md` but exists on disk as `readme.md`;
-on macOS's case-insensitive filesystem, branch switches can silently carry its
-changes across branches. Check `git status` after every checkout.
-
 ## Working style
 
 - Work through problems **one at a time** — propose, get a go-ahead, do the
