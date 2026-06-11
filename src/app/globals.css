@@ -58,6 +58,25 @@ body {
 }
 
 /*
+ * Standard link treatment. Pink + underline at rest makes every link
+ * unmistakable; hover and keyboard focus drop the underline and shift
+ * to cyan, pairing with surface highlights like the card glow. One
+ * class so the affordance stays consistent site-wide.
+ */
+.neon-link {
+  color: var(--accent);
+  text-decoration-line: underline;
+  text-underline-offset: 4px;
+  transition: color 150ms ease;
+}
+
+.neon-link:hover,
+.neon-link:focus-visible {
+  color: var(--accent-2);
+  text-decoration-line: none;
+}
+
+/*
  * Retrowave grid horizon (Footer). Purely decorative — the element is
  * aria-hidden and pointer-events-none, stretched behind the footer
  * content. A perspective-transformed plane of violet gridlines recedes

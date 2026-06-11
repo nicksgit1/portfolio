@@ -56,7 +56,7 @@ export default async function ProjectPage({ params }: Props) {
       {visibleLinks.length > 0 && (
         <p className="mt-4 flex flex-wrap gap-6">
           {visibleLinks.map(([label, href]) => (
-            <a key={label} href={href} className="text-accent hover:underline">
+            <a key={label} href={href} className="neon-link">
               {label}
             </a>
           ))}

@@ -34,10 +34,7 @@ export default function Home() {
           >
             Selected work
           </h2>
-          <Link
-            href="/projects"
-            className="text-sm text-accent hover:underline"
-          >
+          <Link href="/projects" className="neon-link text-sm">
             All projects
           </Link>
         </div>

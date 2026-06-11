@@ -13,7 +13,7 @@ export function ProjectCard({ project }: { project: Project }) {
             project title. */}
         <Link
           href={`/projects/${project.slug}`}
-          className="text-foreground after:absolute after:inset-0 hover:text-accent"
+          className="neon-link after:absolute after:inset-0"
         >
           {project.title}
         </Link>

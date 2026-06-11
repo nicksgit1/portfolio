@@ -12,17 +12,17 @@ export function Footer() {
         </p>
         <ul className="flex gap-6">
           <li>
-            <a href={site.github} className="hover:text-accent">
+            <a href={site.github} className="neon-link">
               GitHub
             </a>
           </li>
           <li>
-            <a href={site.linkedin} className="hover:text-accent">
+            <a href={site.linkedin} className="neon-link">
               LinkedIn
             </a>
           </li>
           <li>
-            <a href={`mailto:${site.email}`} className="hover:text-accent">
+            <a href={`mailto:${site.email}`} className="neon-link">
               Email
             </a>
           </li>

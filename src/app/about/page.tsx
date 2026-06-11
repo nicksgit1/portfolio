@@ -38,7 +38,7 @@ export default function AboutPage() {
       <h2 className="mt-10 font-display text-xl font-semibold">Get in touch</h2>
       <p className="mt-3 max-w-prose">
         The fastest way to reach me is email:{" "}
-        <a href={`mailto:${site.email}`} className="text-accent underline">
+        <a href={`mailto:${site.email}`} className="neon-link">
           {site.email}
         </a>
       </p>

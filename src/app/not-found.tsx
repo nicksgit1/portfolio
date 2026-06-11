@@ -8,7 +8,7 @@ export default function NotFound() {
         That page doesn&apos;t exist (or moved).
       </p>
       <p className="mt-6">
-        <Link href="/" className="text-accent underline">
+        <Link href="/" className="neon-link">
           Back to home
         </Link>
       </p>
