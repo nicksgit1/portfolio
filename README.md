@@ -16,22 +16,29 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Scripts
 
-| Command             | Description                  |
-| ------------------- | ---------------------------- |
-| `yarn dev`          | Start the development server |
-| `yarn build`        | Static export to `out/`      |
-| `yarn lint`         | ESLint                       |
-| `yarn typecheck`    | TypeScript, no emit          |
-| `yarn test`         | Vitest (watch mode)          |
-| `yarn test:run`     | Vitest (single pass, CI)     |
-| `yarn format`       | Prettier write               |
-| `yarn format:check` | Prettier check (CI)          |
+| Command               | Description                                    |
+| --------------------- | ---------------------------------------------- |
+| `yarn dev`            | Start the development server                   |
+| `yarn build`          | Static export to `out/`                        |
+| `yarn lint`           | ESLint                                         |
+| `yarn typecheck`      | TypeScript, no emit                            |
+| `yarn test`           | Vitest (watch mode)                            |
+| `yarn test:run`       | Vitest (single pass, CI)                       |
+| `yarn e2e`            | Playwright against the static export (CI, PRs) |
+| `yarn check:contrast` | WCAG AA contrast check for the design tokens   |
+| `yarn format`         | Prettier write                                 |
+| `yarn format:check`   | Prettier check (CI)                            |
 
 ## Project structure
 
 ```
 src/
-  app/        # Next.js App Router pages and layouts
+  app/          # App Router pages, layouts, and the scene/global CSS
+  components/   # One component per file, tests colocated (Foo.tsx + Foo.test.tsx)
+  content/      # Site copy and project case studies as typed TS data
+e2e/            # Playwright specs (run against the static export)
+scripts/        # Zero-dependency Node utilities (contrast check, static server)
+.githooks/      # pre-commit / pre-push, wired by postinstall
 ```
 
 ## Deployment
