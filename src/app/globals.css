@@ -58,6 +58,53 @@ body {
 }
 
 /*
+ * Mystic blur background (site-wide). A fixed, viewport-filling layer
+ * behind all content: soft radial color blooms (pink, cyan, violet)
+ * drift across the night sky, with a faint halftone line screen over
+ * the bloom regions for retro-print texture. Fixed positioning means
+ * content scrolls over it and the gradients fade naturally — there is
+ * no edge to see. Purely decorative: aria-hidden, pointer-events-none,
+ * static, behind everything (z-index -1; cards and other surfaces are
+ * opaque and unaffected). Bloom peaks are kept low so text contrast
+ * over them stays within AA (verified programmatically).
+ */
+.mystic-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      42% 46% at 8% 12%,
+      color-mix(in srgb, var(--glow-pink) 13%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      40% 45% at 88% 30%,
+      color-mix(in srgb, var(--glow-cyan) 14%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      55% 50% at 60% 80%,
+      color-mix(in srgb, var(--glow-violet) 22%, transparent),
+      transparent 72%
+    );
+}
+
+/* Faint halftone line screen, visible only around the bloom regions. */
+.mystic-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 0.04) 0 1px,
+    transparent 1px 4px
+  );
+  mask-image: radial-gradient(70% 60% at 30% 30%, black, transparent 80%);
+}
+
+/*
  * Standard link treatment. Pink + underline at rest makes every link
  * unmistakable; hover and keyboard focus drop the underline and shift
  * to cyan, pairing with surface highlights like the card glow. One

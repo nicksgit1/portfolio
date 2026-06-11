@@ -8,12 +8,7 @@ export default function Home() {
 
   return (
     <div className="space-y-16">
-      <section aria-labelledby="intro-heading" className="relative">
-        {/* Decorative glow behind the hero — purely visual, hidden from AT. */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -top-28 left-1/2 -z-10 h-72 w-xl max-w-full -translate-x-1/2 rounded-full bg-glow-violet/30 blur-3xl"
-        />
+      <section aria-labelledby="intro-heading">
         <p className="font-display text-sm tracking-[0.35em] text-accent-2 uppercase">
           {site.role}
         </p>
