@@ -15,8 +15,8 @@ export function Hero() {
           <Image
             src={avatar}
             alt={`Cartoon portrait of ${site.name}`}
-            width={1024}
-            height={1024}
+            width={400}
+            height={400}
             priority
           />
         </div>
