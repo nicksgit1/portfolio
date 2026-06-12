@@ -100,7 +100,9 @@ body {
   /*
    * Neon script wordmark — hand-lettered neon-sign text (the classic
    * retrowave logotype). The class sets face, weight, and the layered
-   * pink glow (shadows are exactly what the --glow-* tokens are for);
+   * violet glow (shadows are exactly what the --glow-* tokens are
+   * for). Violet rather than pink or cyan on purpose: those two mean
+   * "link" and "hot" respectively, and the wordmark is not a control;
    * the text color comes from the composing element and must be an
    * AA-safe token (--foreground or --accent). Used in one place — the
    * name wordmark in the home hero — so it reads as a signature, not
@@ -114,10 +116,12 @@ body {
        descenders, which overflow the em box and would otherwise clip
        against adjacent blocks. */
     padding-block: 0.15em;
+    /* Violet is darker than the pink it replaced, so each layer runs
+       a little stronger to keep the same perceived halo. */
     text-shadow:
-      0 0 6px color-mix(in srgb, var(--glow-pink) 75%, transparent),
-      0 0 18px color-mix(in srgb, var(--glow-pink) 55%, transparent),
-      0 0 42px color-mix(in srgb, var(--glow-pink) 40%, transparent);
+      0 0 6px color-mix(in srgb, var(--glow-violet) 85%, transparent),
+      0 0 18px color-mix(in srgb, var(--glow-violet) 65%, transparent),
+      0 0 42px color-mix(in srgb, var(--glow-violet) 50%, transparent);
   }
 }
 
