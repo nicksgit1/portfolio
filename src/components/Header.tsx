@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { site } from "@/content/site";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -14,16 +13,10 @@ export function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="border-b border-border">
-      <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-        <Link
-          href="/"
-          className="font-display text-sm font-bold tracking-widest uppercase transition-colors hover:text-accent-2"
-        >
-          {site.name}
-        </Link>
+    <header>
+      <div className="mx-auto flex max-w-3xl items-center justify-center px-4 py-3">
         <nav aria-label="Main">
-          <ul className="flex gap-6">
+          <ul className="flex gap-10">
             {navItems.map(({ href, label }) => {
               const isCurrent =
                 href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -37,8 +30,8 @@ export function Header() {
                       // site-wide "hot" color (hover/focus/current); pink
                       // marks at-rest links in content.
                       isCurrent
-                        ? "relative font-medium text-foreground after:absolute after:inset-x-0 after:-bottom-1.5 after:h-0.5 after:rounded-full after:bg-accent-2 after:shadow-[0_0_8px_var(--glow-cyan)]"
-                        : "text-muted transition-colors hover:text-accent-2"
+                        ? "relative font-display text-sm font-bold tracking-widest uppercase text-foreground after:absolute after:inset-x-0 after:-bottom-1.5 after:h-0.5 after:rounded-full after:bg-accent-2 after:shadow-[0_0_8px_var(--glow-cyan)]"
+                        : "font-display text-sm font-bold tracking-widest uppercase text-muted transition-colors hover:text-accent-2"
                     }
                   >
                     {label}
