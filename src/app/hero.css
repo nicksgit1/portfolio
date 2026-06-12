@@ -1,0 +1,46 @@
+/*
+ * Home-page hero styles. An open, centered layout: the portrait
+ * dissolves into the night-sky scene, the name renders as the
+ * neon-script wordmark, and the tagline runs the content width.
+ * Rendered by src/components/Hero.tsx; imported by globals.css into
+ * layer(components), same contract as scene.css.
+ */
+
+.hero-card {
+  padding: 1.75rem 2rem 2rem;
+  text-align: center;
+}
+
+/*
+ * Portrait. The artwork arrives in its original palette (warm skin,
+ * teal halftone ground), so the wrapper retones it: a violet-to-pink
+ * gradient supplies hue and saturation while the image composites
+ * with mix-blend-mode: luminosity — the drawing's light and shadow
+ * land in the site's purples. The radial mask sits on the wrapper so
+ * the blended result (not the raw image) fades into the starfield;
+ * its fade completes just inside every edge of the box, so the
+ * image's own boundary can never print a hard line over the scene.
+ * isolation keeps the blend from compositing against the page.
+ */
+.hero-avatar {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 12rem);
+  aspect-ratio: 1;
+  margin-inline: auto;
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--glow-violet) 60%, var(--background)),
+    color-mix(in srgb, var(--glow-pink) 32%, var(--background)) 85%
+  );
+  /* These numbers are tuned to this artwork's composition (head
+     placement and size) — re-tune them when swapping the portrait. */
+  mask-image: radial-gradient(64% 60% at 50% 48%, black 44%, transparent 76%);
+}
+
+.hero-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  mix-blend-mode: luminosity;
+}
