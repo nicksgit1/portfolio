@@ -4,6 +4,8 @@
    (and every custom class here) below Tailwind utilities in the
    cascade, so a utility can always override a component class. */
 @import "./scene.css" layer(components);
+/* Home-page hero frame art — same layering contract as scene.css. */
+@import "./hero.css" layer(components);
 
 /*
  * Design tokens — retrowave palette.
@@ -61,6 +63,8 @@
     ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
   /* Populated by next/font in layout.tsx; falls back to sans. */
   --font-display: var(--font-orbitron, var(--font-sans));
+  /* Script accent for the hero wordmark only (.neon-script). */
+  --font-script: var(--font-mr-dafoe, cursive);
 }
 
 /* NOTE: the scene's z-index:-1 layers (see scene.css) rely on body and
@@ -91,6 +95,29 @@ body {
   .neon-link:focus-visible {
     color: var(--accent-2);
     text-decoration-line: none;
+  }
+
+  /*
+   * Neon script wordmark — hand-lettered neon-sign text (the classic
+   * retrowave logotype). The class sets face, weight, and the layered
+   * pink glow (shadows are exactly what the --glow-* tokens are for);
+   * the text color comes from the composing element and must be an
+   * AA-safe token (--foreground or --accent). Used in one place — the
+   * name wordmark in the home hero — so it reads as a signature, not
+   * a theme. Script faces need their natural case and spacing: don't
+   * compose with uppercase or tracking utilities.
+   */
+  .neon-script {
+    font-family: var(--font-script);
+    font-weight: 400;
+    /* Breathing room for the face's tall ascenders and swash
+       descenders, which overflow the em box and would otherwise clip
+       against adjacent blocks. */
+    padding-block: 0.15em;
+    text-shadow:
+      0 0 6px color-mix(in srgb, var(--glow-pink) 75%, transparent),
+      0 0 18px color-mix(in srgb, var(--glow-pink) 55%, transparent),
+      0 0 42px color-mix(in srgb, var(--glow-pink) 40%, transparent);
   }
 }
 

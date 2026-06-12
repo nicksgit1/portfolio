@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Orbitron } from "next/font/google";
+import { Mr_Dafoe, Orbitron } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { site } from "@/content/site";
@@ -11,6 +11,16 @@ import "./globals.css";
 const orbitron = Orbitron({
   subsets: ["latin"],
   variable: "--font-orbitron",
+  display: "swap",
+});
+
+/* Script font for the hero wordmark only (see .neon-script in
+   globals.css) — a hand-lettered neon-sign accent in the retrowave
+   tradition. Single style, so the weight is fixed. */
+const mrDafoe = Mr_Dafoe({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-mr-dafoe",
   display: "swap",
 });
 
@@ -44,7 +54,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={orbitron.variable}>
+    <html lang="en" className={`${orbitron.variable} ${mrDafoe.variable}`}>
       <body className="flex min-h-dvh flex-col antialiased">
         {/* Site-wide decorative background: mystic-blur color blooms,
             star field, and scanlines. Fixed behind all content, hidden
