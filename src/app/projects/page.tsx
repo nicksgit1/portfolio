@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ProjectCard } from "@/components/ProjectCard";
+import { ProjectFilter } from "@/components/ProjectFilter";
 import { projects } from "@/content/projects";
 
 export const metadata: Metadata = {
@@ -15,13 +15,9 @@ export default function ProjectsPage() {
         Each project is written up as a short case study: the problem, the
         approach, and what came of it.
       </p>
-      <div className="mt-8 grid gap-6">
-        {projects.map((project) => (
-          // h2: the cards sit directly under the page h1 here, unlike the
-          // home page where they fall under the "Selected work" h2.
-          <ProjectCard key={project.slug} project={project} headingLevel="h2" />
-        ))}
-      </div>
+      {/* The filter bar + grid are interactive, so they live in a client
+          component; this page stays a Server Component. */}
+      <ProjectFilter projects={projects} />
     </div>
   );
 }

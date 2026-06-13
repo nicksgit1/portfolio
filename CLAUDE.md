@@ -98,6 +98,12 @@ directly, and `node scripts/*.mjs`. What doesn't: `yarn install`, `vitest`,
 machine (the pre-push hook covers them) and CI, and ask the owner to pull
 `main` after a merge before cutting a new branch from it.
 
+The owner has the Claude in Chrome extension installed and connected, so an
+assistant can drive a real browser — navigate to the dev server
+(`yarn dev`, http://localhost:3000) and screenshot — to verify visual and
+interactive changes itself, rather than relying solely on the owner's eyes.
+Use it for the in-browser verification the design rules above call for.
+
 ## Branch flow
 
 `main` is protected — all changes land via PR from `feat/*`, `fix/*`, or
