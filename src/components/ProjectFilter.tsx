@@ -74,7 +74,7 @@ export function ProjectFilter({ projects }: Props) {
             <button
               type="button"
               onClick={() => setSelected([])}
-              className="text-xs text-accent-2 underline-offset-4 transition hover:underline"
+              className="cursor-pointer text-xs text-accent-2 underline-offset-4 transition hover:underline"
             >
               {/* Cyan at rest with an aria-hidden × for the dismiss
                   affordance; the underline only appears on hover — the
@@ -97,7 +97,7 @@ export function ProjectFilter({ projects }: Props) {
                   aria-pressed={active}
                   onClick={() => toggle(tech)}
                   className={[
-                    "rounded-full border px-3 py-1 text-xs transition",
+                    "rounded-full border px-3 py-1 text-xs transition cursor-pointer",
                     active
                       ? "border-accent-2 bg-accent-2/10 text-accent-2 shadow-[0_0_18px_-6px_var(--glow-cyan)]"
                       : "border-border text-muted hover:border-accent-2 hover:text-accent-2",
