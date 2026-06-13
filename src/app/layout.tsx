@@ -75,7 +75,7 @@ export default function RootLayout({
             horizon, whose height is set by .city-scape in globals.css. */}
         <main
           id="main"
-          className="mx-auto w-full max-w-3xl flex-1 px-4 pt-12 pb-44 sm:pb-96"
+          className="mx-auto w-full max-w-3xl flex-1 px-4 pt-12 pb-56 sm:pb-[28rem]"
         >
           {children}
         </main>
