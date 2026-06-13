@@ -128,6 +128,15 @@ for (const { name, fraction } of nearSkyline) {
   );
 }
 
+// Active filter chip: accent-2 text sits on a 10% accent-2 tint over the
+// page background (bg-accent-2/10 in ProjectFilter). It's a component
+// class, not a token pairing, so the loops above never reach it. The
+// 0.10 mirrors the Tailwind /10 opacity — keep in sync if that changes.
+check(
+  "accent-2 on 10% accent-2 tint",
+  contrast(text["accent-2"], composite("accent-2", 0.1)),
+);
+
 if (failures > 0) fail(`${failures} contrast check(s) below ${MIN}:1`);
 console.log("\nAll contrast checks pass (WCAG 2.1 AA, 4.5:1).");
 

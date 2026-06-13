@@ -74,9 +74,13 @@ export function ProjectFilter({ projects }: Props) {
             <button
               type="button"
               onClick={() => setSelected([])}
-              className="text-xs text-muted underline decoration-dotted underline-offset-4 transition hover:text-accent-2"
+              className="text-xs text-accent-2 underline-offset-4 transition hover:underline"
             >
-              Clear filters
+              {/* Cyan at rest with an aria-hidden × for the dismiss
+                  affordance; the underline only appears on hover — the
+                  inverse of a link (underlined at rest), so it reads as
+                  an action, not navigation. */}
+              <span aria-hidden="true">×</span> Clear filters
             </button>
           )}
         </div>
@@ -99,6 +103,15 @@ export function ProjectFilter({ projects }: Props) {
                       : "border-border text-muted hover:border-accent-2 hover:text-accent-2",
                   ].join(" ")}
                 >
+                  {/* Non-color cue for selection: the checkmark backs up
+                      the fill + aria-pressed so state survives a color
+                      deficiency. Only present when active — the chip
+                      grows on toggle rather than reserving the space. */}
+                  {active && (
+                    <span aria-hidden="true" className="mr-1">
+                      ✓
+                    </span>
+                  )}
                   {tech}
                 </button>
               </li>
@@ -109,7 +122,7 @@ export function ProjectFilter({ projects }: Props) {
 
       {/* Announce the result count to screen readers as filters change;
           the visible count below carries the same information sighted. */}
-      <p role="status" aria-live="polite" className="mt-6 text-sm text-muted">
+      <p role="status" className="mt-6 text-sm text-muted">
         {filtering
           ? `Showing ${visible.length} of ${projects.length} projects`
           : `${projects.length} projects`}
