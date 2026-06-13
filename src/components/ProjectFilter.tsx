@@ -1,6 +1,6 @@
 "use client";
 
-import { type CSSProperties, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { ProjectCard } from "@/components/ProjectCard";
 import type { Project } from "@/content/projects";
 
@@ -88,30 +88,19 @@ export function ProjectFilter({ projects }: Props) {
           aria-labelledby="filter-label"
           className="mt-3 flex flex-wrap gap-2"
         >
-          {tags.map((tech, index) => {
+          {tags.map((tech) => {
             const active = selected.includes(tech);
-            // Spread a neon rainbow across the chips by reading order
-            // (0°→320°, red through violet). Lives only in the hover
-            // border + glow via --chip-hue; text stays cyan so contrast
-            // is untouched and the cyan = hot semantics still read.
-            const hue = Math.round(
-              (index / Math.max(tags.length - 1, 1)) * 320,
-            );
             return (
               <li key={tech}>
                 <button
                   type="button"
                   aria-pressed={active}
                   onClick={() => toggle(tech)}
-                  style={{ "--chip-hue": hue } as CSSProperties}
                   className={[
                     "rounded-full border px-3 py-1 text-xs transition",
-                    "cursor-pointer",
-                    "hover:border-[hsl(var(--chip-hue),95%,62%)]",
-                    "hover:shadow-[0_0_20px_-4px_hsl(var(--chip-hue),100%,60%)]",
                     active
                       ? "border-accent-2 bg-accent-2/10 text-accent-2 shadow-[0_0_18px_-6px_var(--glow-cyan)]"
-                      : "border-border text-muted hover:text-accent-2",
+                      : "border-border text-muted hover:border-accent-2 hover:text-accent-2",
                   ].join(" ")}
                 >
                   {/* Non-color cue for selection: the checkmark backs up
