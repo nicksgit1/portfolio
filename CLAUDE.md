@@ -78,7 +78,12 @@ hook loop to keep commits and pushes fast.
 - Color semantics are fixed: pink + underline = at-rest link (`.neon-link`);
   cyan = "hot" states (hover, focus, current page); `--glow-*` tokens are for
   gradients and glows only, never text. Don't invent new meanings for these
-  colors.
+  colors. One deliberate exception: the project filter chips spread a
+  per-chip neon rainbow across their hover border + glow (`--chip-hue` in
+  `ProjectFilter`). It's a decorative flourish confined to the glow/border
+  layer — chip text stays cyan, so contrast and the cyan = hot text
+  semantics are untouched. Don't extend this rainbow to text or to other
+  components.
 - The site is dark-only by design (rationale in `globals.css`).
 - All background/scene art is pure CSS in `src/app/scene.css` — contracts are
   documented at the top of that file (relative-footer anchor, no stacking
